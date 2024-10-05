@@ -1,0 +1,1 @@
+console.log("This should appear in console")
