@@ -12,9 +12,25 @@ def index():
     return response
 
 
+@app.route("/login.html")
+def login_html():
+    response = make_response(render_template("login.html"))
+    response.headers.set("Content-Type", "text/html")
+    response.headers.set("X-Content-Type-Options", "nosniff")
+    return response
+
+
 @app.route("/static/css/styles.css")
 def css():
     response = make_response(send_from_directory("static/css", "styles.css"))
+    response.headers.set("Content-Type", "text/css")
+    response.headers.set("X-Content-Type-Options", "nosniff")
+    return response
+
+
+@app.route("/static/css/login.css")
+def login_style():
+    response = make_response(send_from_directory("static/css", "login.css"))
     response.headers.set("Content-Type", "text/css")
     response.headers.set("X-Content-Type-Options", "nosniff")
     return response

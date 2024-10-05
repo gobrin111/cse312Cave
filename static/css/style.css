@@ -1,6 +1,48 @@
 body {
-    background-color: #16314f;
-    font-family: "Karla", sans-serif;
+    background-color: #121213;
+    color: #f8f8f8;
+    margin: 0;
+    font-family: "Roboto", sans-serif;
+    font-size: 20pt;
+}
+
+.header {
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center;     /* Center vertically */
+}
+
+.header > div {
+    flex: 1;
+    font-family: "Bebas Neue", sans-serif;
+}
+
+.log-out, .sign-in {
+    padding: 0 25px;
+    font-size: 30pt;
+}
+
+.sign-in {
+    text-align: right;
+}
+
+.sign-in > a {
     color: white;
+}
+
+.title {
+    font-size: 55pt;
+    margin: 15px auto 0 auto;
+    letter-spacing: 3px;
     text-align: center;
+}
+
+.main {
+    display: flex;
+}
+
+.main > div {
+    flex: 1;
+    text-align: center;
+    padding: 10px;
 }
