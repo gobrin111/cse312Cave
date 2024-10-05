@@ -8,16 +8,16 @@ body {
 
 .header {
     display: flex;
-    justify-content: center; /* Center horizontally */
-    align-items: center;     /* Center vertically */
+    justify-content: center;
+    align-items: center;
 }
 
 .header > div {
-    flex: 1;
     font-family: "Bebas Neue", sans-serif;
 }
 
 .log-out, .sign-in {
+    flex: 1;
     padding: 0 25px;
     font-size: 30pt;
 }
@@ -31,10 +31,15 @@ body {
 }
 
 .title {
+    flex: 3;
     font-size: 55pt;
     margin: 15px auto 0 auto;
     letter-spacing: 3px;
     text-align: center;
+}
+
+.title > img {
+    height: 50px;
 }
 
 .main {

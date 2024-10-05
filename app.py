@@ -44,17 +44,17 @@ def js():
     return response
 
 
-@app.route("/static/images/red_tercel.ico")
+@app.route("/static/images/wordle-favicon.ico")
 def favicon():
-    response = make_response(send_from_directory("static/images", "red_tercel.ico"))
+    response = make_response(send_from_directory("static/images", "wordle-favicon.ico"))
     response.headers.set("Content-Type", "image/x-icon")
     response.headers.set("X-Content-Type-Options", "nosniff")
     return response
 
 
-@app.route("/static/images/image_placeholder.png")
+@app.route("/static/images/logo.png")
 def image():
-    response = make_response(send_from_directory("static/images", "image_placeholder.png"))
+    response = make_response(send_from_directory("static/images", "logo.png"))
     response.headers.set("Content-Type", "image/png")
     response.headers.set("X-Content-Type-Options", "nosniff")
     return response
