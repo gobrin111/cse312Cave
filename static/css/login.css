@@ -18,6 +18,10 @@ body {
     margin: 15px auto 0 auto;
 }
 
+.title > img {
+    height: 50px;
+}
+
 .sub-title {
     font-size: 45pt;
     letter-spacing: 4px;
