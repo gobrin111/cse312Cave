@@ -18,7 +18,6 @@ function writeWord(tiles, tilesArray) {
 }
 
 function wordleFlipCorrect(tiles, tilesArray) {
-
     tilesArray.forEach((tile, i) => {
         setTimeout(() => {
          tile.classList.remove("expand-shrink");
@@ -28,7 +27,6 @@ function wordleFlipCorrect(tiles, tilesArray) {
 }
 
 function wordleFlipIncorrect(tiles, tilesArray) {
-
     tilesArray.forEach((tile, i) => {
         setTimeout(() => {
          tile.classList.remove("expand-shrink");

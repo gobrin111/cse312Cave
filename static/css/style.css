@@ -24,7 +24,7 @@ body {
 
 .right-header-element, .left-header-element {
     flex: 1;
-    padding: 0 25px;
+    padding: 0 30px;
     font-size: 30pt;
 }
 
@@ -53,12 +53,19 @@ body {
     color: white;
 }
 
+.title-anchor {
+    text-decoration: none;
+    color: #f8f8f8;
+    font-family: "Bebas Neue", sans-serif;
+}
+
 .title {
     flex: 3;
     font-size: 55pt;
     margin: 15px auto 0 auto;
     letter-spacing: 3px;
     text-align: center;
+    display: inline-block;
 }
 
 .title > img {
@@ -123,4 +130,4 @@ body {
     background: #2e2e2e;
 }
 
-/* Chat ================================================*/
+/* End chat ================================================*/
