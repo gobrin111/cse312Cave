@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>Wurdle Royale</title>
+    <link rel="shortcut icon" type="image/x-icon" href="/static/images/wordle-favicon.ico">
     <link rel="stylesheet" type="text/css" href="static/css/credentials.css"/>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
 </head>
 <body>
-    <script src="static/js/login.js"></script>
+    <script src="static/js/wordFlip.js"></script>
 
     <div class="title">
         <img src="static/images/logo.png"/>
@@ -19,9 +20,9 @@
     <hr>
 
     <section class="credentials">
-        <div class = "login">
-            <section class="login-title-container">
-                <div class="login-title">
+        <div>
+            <section class="title-animation-container">
+                <div class="title-animation">
                     <div class="inner">
                         <span class = inner-text>L</span>
                     </div>
@@ -52,7 +53,8 @@
                 <input type="submit" value="Log in" class="button">
             </form>
 
-            <button class="button" onclick="window.location.href='register.html'">Sign up</button>
+            <br/>
+            <a href="register.html"> New User? </a>
         </div>
     </section>
 

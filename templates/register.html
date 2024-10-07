@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>Wurdle Royale</title>
+    <link rel="shortcut icon" type="image/x-icon" href="/static/images/wordle-favicon.ico">
     <link rel="stylesheet" type="text/css" href="static/css/credentials.css"/>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
 </head>
 <body>
-    <script src="static/js/register.js"></script>
+    <script src="static/js/wordFlip.js"></script>
 
     <div class="title">
         <img src="static/images/logo.png"/>
@@ -20,7 +21,31 @@
 
     <section class="credentials">
         <div>
-            <h3 class="sub-title"> Sign Up </h3>
+            <section class="title-animation-container">
+                <div class="title-animation register-title-animation">
+                    <div class="inner">
+                        <span class = inner-text>S</span>
+                    </div>
+                    <div class="inner">
+                        <span class = inner-text>I</span>
+                    </div>
+                    <div class="inner">
+                        <span class = inner-text>G</span>
+                    </div>
+                    <div class="inner">
+                        <span class = inner-text>N</span>
+                    </div>
+                    <div class="inner">
+                        <span class = inner-text>-</span>
+                    </div>
+                    <div class="inner">
+                        <span class = inner-text>U</span>
+                    </div>
+                    <div class="inner">
+                        <span class = inner-text>P</span>
+                    </div>
+                </div>
+            </section>
 
             <form action="/register" method="post" enctype="application/x-www-form-urlencoded">
                 <label>Username: <br/>
