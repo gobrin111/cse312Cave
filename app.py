@@ -19,6 +19,12 @@ def login_html():
     response.headers.set("X-Content-Type-Options", "nosniff")
     return response
 
+@app.route("/register.html")
+def register_html():
+    response = make_response(render_template("register.html"))
+    response.headers.set("Content-Type", "text/html")
+    response.headers.set("X-Content-Type-Options", "nosniff")
+    return response
 
 @app.route("/static/css/styles.css")
 def css():
@@ -35,7 +41,12 @@ def login_style():
     response.headers.set("X-Content-Type-Options", "nosniff")
     return response
 
-
+@app.route("/static/css/register.css")
+def register_style():
+    response = make_response(send_from_directory("static/css", "register.css"))
+    response.headers.set("Content-Type", "text/css")
+    response.headers.set("X-Content-Type-Options", "nosniff")
+    return response
 @app.route("/static/js/script.js")
 def js():
     response = make_response(send_from_directory("static/js", "script.js"))
@@ -46,6 +57,13 @@ def js():
 @app.route("/static/js/login.js")
 def login_js():
     response = make_response(send_from_directory("static/js", "login.js"))
+    response.headers.set("Content-Type", "text/javascript")
+    response.headers.set("X-Content-Type-Options", "nosniff")
+    return response
+
+@app.route("/static/js/register.js")
+def register_js():
+    response = make_response(send_from_directory("static/js", "register.js"))
     response.headers.set("Content-Type", "text/javascript")
     response.headers.set("X-Content-Type-Options", "nosniff")
     return response
