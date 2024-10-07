@@ -120,3 +120,14 @@ input[type=submit] {
 input[type=submit]:hover {
     background-color: #6aaa64;
 }
+
+.register_button {
+    margin-top: 20px;
+    font-size: 20pt;
+    letter-spacing: 1px;
+    font-family: "Bebas Neue", sans-serif;
+    transition: 0.25s;
+}
+.register-button:hover {
+    background-color: #6aaa64;
+}

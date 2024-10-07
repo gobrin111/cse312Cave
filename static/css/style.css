@@ -15,11 +15,24 @@ body {
 .header > div {
     font-family: "Bebas Neue", sans-serif;
 }
-
-.log-out, .sign-in {
+.sign-in, .log-out {
     flex: 1;
     padding: 0 25px;
     font-size: 30pt;
+}
+.header span{
+    flex: 1;
+    font-size: 30pt;
+    font-family: "Bebas Neue", sans-serif;
+    color: #f8f8f8;
+}
+.log-out button{
+    font-size: 30pt;
+    font-family: "Bebas Neue", sans-serif;
+    color: #f8f8f8;
+    background: none;
+    border: none;
+    cursor: pointer;
 }
 
 .sign-in {

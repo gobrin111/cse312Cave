@@ -12,14 +12,24 @@
 <body>
     <script src="static/js/script.js"></script>
     <nav class="header">
-        <div class="log-out"> [log out] </div>
+        {% if username %}
+            <form action="/logout" method="post" class="log-out">
+                <button type="submit"> [Log out] </button>
+            </form>
+        {% else %}
+            <span> Guest </span>
+        {% endif %}
         <div class="title">
             <img src="static/images/logo.png"/>
             Wurdle Royale
             <img src="static/images/logo.png"/>
         </div>
         <div class="sign-in">
-            <a href="login.html"> Sign up / Log In </a>
+            {% if username %}
+                <span>{{ username }}</span>
+            {% else %}
+                <a href="login.html">Sign up / Log In</a>
+            {% endif %}
         </div>
     </nav>
 
