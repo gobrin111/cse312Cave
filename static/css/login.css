@@ -8,9 +8,72 @@ body {
     margin: 0;
 }
 
-.title, .sub-title {
+
+.title, .login-title {
     font-family: "Bebas Neue", sans-serif;
 }
+
+.login {
+    margin-top: 5vh;
+}
+/* START OF WORDLE ANIMATION */
+
+.login-title {
+    width: 10vw;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-gap: 0.4vw;
+}
+
+.inner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 4vw;
+    color: #f8f8f8;
+    width: 100px;
+    height: 100px;
+    border: 2px solid #3a3a3c;
+    border-radius: 6px;
+    transition: transform 300ms ease;
+}
+.inner span {
+    opacity: 0;
+}
+.flip {
+    animation: flip 550ms ease forwards;
+}
+@keyframes flip {
+    0% {
+        transform: scaleY(1);
+    }
+    50% {
+        transform: scaleY(0);
+        background: #121213;
+    }
+    100% {
+        transform: scaleY(1);
+        background: green;
+    }
+}
+
+.expand-shrink {
+    animation: expandThenShrink 400ms ease;
+}
+
+@keyframes expandThenShrink {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* END OF WORDLE ANIMATION */
 
 .title {
     font-size: 55pt;
@@ -22,11 +85,6 @@ body {
     height: 50px;
 }
 
-.sub-title {
-    font-size: 45pt;
-    letter-spacing: 4px;
-    margin: 15px auto;
-}
 
 .credentials {
     display: flex;

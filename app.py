@@ -43,6 +43,13 @@ def js():
     response.headers.set("X-Content-Type-Options", "nosniff")
     return response
 
+@app.route("/static/js/login.js")
+def login_js():
+    response = make_response(send_from_directory("static/js", "login.js"))
+    response.headers.set("Content-Type", "text/javascript")
+    response.headers.set("X-Content-Type-Options", "nosniff")
+    return response
+
 
 @app.route("/static/images/wordle-favicon.ico")
 def favicon():

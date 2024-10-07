@@ -5,7 +5,7 @@ WORKDIR /root
 
 COPY . .
 
-RUN pip3 install Flask
+RUN pip3 install -r requirements.txt
 
 EXPOSE 8080
 CMD python3 -u app.py
