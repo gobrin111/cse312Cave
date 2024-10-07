@@ -40,9 +40,20 @@
     <hr>
 
     <section class="main">
-        <div class="leaderboard"> Leaderboard</div>
+        <div class="leaderboard"> Leaderboard </div>
         <div class="game"> Game </div>
-        <div class="info"> Chat </div>
+        <div class="chat">
+            <div class="chat-box"></div>
+            <input id="chat-input" type="text" placeholder="Type Message" class="chat-input">
+            <input type="button" id="chat-button" onclick="sendChat()" value="Send" class="send">
+            <script>
+                document.addEventListener("keypress", function (event) {
+                    if (event.code === "Enter") {
+                        sendChat();
+                    }
+                });
+            </script>
+        </div>
     </section>
 </body>
 </html>
