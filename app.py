@@ -7,12 +7,12 @@ import bcrypt
 import hashlib
 import uuid
 
-
 app = Flask(__name__)
 
 mongo_client = MongoClient("mongo")
 db = mongo_client["wurdle"]
 user_collection = db["users"]
+
 
 # Root path
 @app.route("/")
@@ -37,12 +37,14 @@ def login_html():
     response.headers.set("X-Content-Type-Options", "nosniff")
     return response
 
+
 @app.route("/register.html")
 def register_html():
     response = make_response(render_template("register.html"))
     response.headers.set("Content-Type", "text/html")
     response.headers.set("X-Content-Type-Options", "nosniff")
     return response
+
 
 @app.route("/static/css/styles.css")
 def css():
@@ -52,19 +54,14 @@ def css():
     return response
 
 
-@app.route("/static/css/login.css")
-def login_style():
-    response = make_response(send_from_directory("static/css", "login.css"))
+@app.route("/static/css/credentials.css")
+def credentials_style():
+    response = make_response(send_from_directory("static/css", "credentials.css"))
     response.headers.set("Content-Type", "text/css")
     response.headers.set("X-Content-Type-Options", "nosniff")
     return response
 
-@app.route("/static/css/register.css")
-def register_style():
-    response = make_response(send_from_directory("static/css", "register.css"))
-    response.headers.set("Content-Type", "text/css")
-    response.headers.set("X-Content-Type-Options", "nosniff")
-    return response
+
 @app.route("/static/js/script.js")
 def js():
     response = make_response(send_from_directory("static/js", "script.js"))
@@ -72,12 +69,14 @@ def js():
     response.headers.set("X-Content-Type-Options", "nosniff")
     return response
 
+
 @app.route("/static/js/login.js")
 def login_js():
     response = make_response(send_from_directory("static/js", "login.js"))
     response.headers.set("Content-Type", "text/javascript")
     response.headers.set("X-Content-Type-Options", "nosniff")
     return response
+
 
 @app.route("/static/js/register.js")
 def register_js():
@@ -102,11 +101,12 @@ def image():
     response.headers.set("X-Content-Type-Options", "nosniff")
     return response
 
-#Register Code
 
+# Register Code
 def hash_password(password):
     salt = bcrypt.gensalt()
     return bcrypt.hashpw(password.encode('utf-8'), salt).decode('utf-8')
+
 
 def check_password(hashed_password, password):
     return bcrypt.checkpw(password.encode('utf-8'), hashed_password.encode('utf-8'))
@@ -133,6 +133,7 @@ def validate_password(password):
             return False
     return lower and upper and number and specialChar
 
+
 @app.route('/register', methods=['POST'])
 def register():
     username = request.form.get('username')
@@ -141,7 +142,7 @@ def register():
     if not validate_password(password) or password != password_confirm:
         return redirect(url_for('register_html'))
 
-    #if username exists
+    # if username exists
     if user_collection.find_one({"username": username}):
         return redirect(url_for('register_html'))
 
@@ -149,6 +150,7 @@ def register():
     user_collection.insert_one({"username": username, "password": hashed_password})
 
     return redirect(url_for('login_html'))
+
 
 @app.route('/login', methods=['POST'])
 def login():
@@ -167,16 +169,19 @@ def login():
     response.set_cookie('auth_token', token, max_age=3600, httponly=True)
     return response
 
+
 @app.route('/logout', methods=['POST'])
 def logout():
     auth_token = request.cookies.get("auth_token")
 
     if auth_token:
-        user_collection.update_one({"auth_token": hashlib.sha256(auth_token.encode('utf-8')).hexdigest()}, {"$set": {"auth_token": None}})
+        user_collection.update_one({"auth_token": hashlib.sha256(auth_token.encode('utf-8')).hexdigest()},
+                                   {"$set": {"auth_token": None}})
 
     response = make_response(redirect(url_for('index')))
-    response.set_cookie('auth_token', '', expires=0, httponly=True)
+    response.set_cookie('auth_token', '', max_age=0, httponly=True)
     return response
+
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8080)

@@ -15,31 +15,35 @@ body {
 .header > div {
     font-family: "Bebas Neue", sans-serif;
 }
-.sign-in, .log-out {
+
+.right-header-element, .left-header-element {
     flex: 1;
     padding: 0 25px;
     font-size: 30pt;
 }
-.header span{
+
+.header > span{
     flex: 1;
     font-size: 30pt;
     font-family: "Bebas Neue", sans-serif;
     color: #f8f8f8;
 }
-.log-out button{
+
+.right-header-element > form > button{
     font-size: 30pt;
     font-family: "Bebas Neue", sans-serif;
     color: #f8f8f8;
     background: none;
     border: none;
     cursor: pointer;
+    text-decoration: underline;
 }
 
-.sign-in {
+.right-header-element {
     text-align: right;
 }
 
-.sign-in > a {
+.right-header-element > a {
     color: white;
 }
 
