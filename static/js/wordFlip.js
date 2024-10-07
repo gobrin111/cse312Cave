@@ -1,14 +1,13 @@
 window.addEventListener("load", (event) => {
-    setTimeout(function() {
-        wordleFlip();
-    }, 500);
-});
-
-function wordleFlip() {
     let tiles = document.getElementsByClassName("inner");
     let tilesArray = Array.from(tiles);
+    setTimeout(function() {
+        writeWord(tiles, tilesArray);
+    }, 200);
+});
 
-    tilesArray.forEach((tile, i) => {
+function writeWord(tiles, tilesArray) {
+        tilesArray.forEach((tile, i) => {
         const textElement = tile.querySelector(".inner-text");
         setTimeout(() => {
             textElement.style.opacity = "1";
@@ -16,11 +15,92 @@ function wordleFlip() {
             tile.style.borderColor = "#565758";
         }, i * 200);
     });
+}
+
+function wordleFlipCorrect(tiles, tilesArray) {
 
     tilesArray.forEach((tile, i) => {
         setTimeout(() => {
          tile.classList.remove("expand-shrink");
-         tile.classList.add("flip");
+         tile.classList.add("correct-flip");
         }, (i * 200) + 1200);
     });
+}
+
+function wordleFlipIncorrect(tiles, tilesArray) {
+
+    tilesArray.forEach((tile, i) => {
+        setTimeout(() => {
+         tile.classList.remove("expand-shrink");
+         tile.classList.add("incorrect-flip");
+        }, (i * 200) + 1200);
+    });
+}
+
+
+function loginUser() {
+    const username = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
+
+    const request = new XMLHttpRequest();
+    request.open("POST", "/login", true);
+    request.setRequestHeader("Content-Type", "application/json");
+
+    request.onreadystatechange = function () {
+        if (this.readyState === 4) {
+            if (this.status === 200) {
+                let tiles = document.getElementsByClassName("inner");
+                let tilesArray = Array.from(tiles);
+                wordleFlipCorrect(tiles, tilesArray);
+                setTimeout(() => {
+                    window.location.href = '/';
+                }, 2500);
+
+            } else if (this.status === 403) {
+                let tiles = document.getElementsByClassName("inner");
+                let tilesArray = Array.from(tiles);
+                wordleFlipIncorrect(tiles, tilesArray);
+                setTimeout(() => {
+                    window.location.href = '/login.html';
+                }, 2500);
+            }
+        }
+    };
+
+    const loginData = JSON.stringify({ username: username, password: password });
+    request.send(loginData);
+}
+
+function registerUser() {
+    const username = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
+    const password_confirm = document.getElementById("password_confirm").value;
+
+    const request = new XMLHttpRequest();
+    request.open("POST", "/register", true);
+    request.setRequestHeader("Content-Type", "application/json");
+
+    request.onreadystatechange = function () {
+        if (this.readyState === 4) {
+            if (this.status === 200) {
+                let tiles = document.getElementsByClassName("inner");
+                let tilesArray = Array.from(tiles);
+                wordleFlipCorrect(tiles, tilesArray);
+                setTimeout(() => {
+                    window.location.href = '/login.html';
+                }, 2900);
+
+            } else if (this.status === 403) {
+                let tiles = document.getElementsByClassName("inner");
+                let tilesArray = Array.from(tiles);
+                wordleFlipIncorrect(tiles, tilesArray);
+                setTimeout(() => {
+                    window.location.href = '/register.html';
+                }, 2900);
+            }
+        }
+    };
+
+    const loginData = JSON.stringify({ username: username, password: password, password_confirm: password_confirm });
+    request.send(loginData);
 }

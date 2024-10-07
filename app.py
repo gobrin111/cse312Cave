@@ -128,37 +128,53 @@ def validate_password(password):
 
 @app.route('/register', methods=['POST'])
 def register():
-    username = request.form.get('username')
-    password = request.form.get('password')
-    password_confirm = request.form.get('password_confirm')
+    data = request.get_json()
+    username = data.get('username')
+    password = data.get('password')
+    password_confirm = data.get('password_confirm')
     if not validate_password(password) or password != password_confirm:
-        return redirect(url_for('register_html'))
+        response = make_response(json.dumps({"error": "Invalid Password"}), 403)
+        response.headers.set("Content-Type", "application/json")
+        response.headers.set("X-Content-Type-Options", "nosniff")
+        return response
 
     # if username exists
     if user_collection.find_one({"username": username}):
-        return redirect(url_for('register_html'))
+        response = make_response(json.dumps({"error": "Username Already Taken"}), 403)
+        response.headers.set("Content-Type", "application/json")
+        response.headers.set("X-Content-Type-Options", "nosniff")
+        return response
 
     hashed_password = hash_password(password)
     user_collection.insert_one({"username": username, "password": hashed_password})
 
-    return redirect(url_for('login_html'))
-
+    response = make_response(json.dumps({"message": "Register Successful"}), 200)
+    response.headers.set("Content-Type", "application/json")
+    response.headers.set("X-Content-Type-Options", "nosniff")
+    return response
 
 @app.route('/login', methods=['POST'])
 def login():
-    username = request.form.get('username')
-    password = request.form.get('password')
+    data = request.get_json()
+    username = data.get('username')
+    password = data.get('password')
 
     user = user_collection.find_one({"username": username})
     if not user or not check_password(user['password'], password):
-        return redirect(url_for('login_html'))
+        response = make_response(json.dumps({"error": "Invalid username or password"}), 403)
+        response.headers.set("Content-Type", "application/json")
+        response.headers.set("X-Content-Type-Options", "nosniff")
+        return response
 
     token = str(uuid.uuid4())
     hashed_token = hashlib.sha256(token.encode('utf-8')).hexdigest()
     user_collection.update_one({"username": username}, {"$set": {"auth_token": hashed_token}})
 
-    response = make_response(redirect(url_for('index')))
+    response = make_response(json.dumps({"message": "Login successful"}), 200)
+    response.headers.set("Content-Type", "application/json")
+    response.headers.set("X-Content-Type-Options", "nosniff")
     response.set_cookie('auth_token', token, max_age=3600, httponly=True)
+
     return response
 
 
@@ -176,4 +192,4 @@ def logout():
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8080)
+    app.run(host="0.0.0.0", port=8080, debug=True)

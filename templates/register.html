@@ -47,17 +47,17 @@
                 </div>
             </section>
 
-            <form action="/register" method="post" enctype="application/x-www-form-urlencoded">
+            <form action="/register" method="post" enctype="application/x-www-form-urlencoded" onsubmit="event.preventDefault(); registerUser();">
                 <label>Username: <br/>
-                    <input type="text" name="username" required/>
+                    <input type="text" id="username" required/>
                 </label>
                 <br/>
                 <label>Password: <br/>
-                    <input type="password" name="password" required>
+                    <input type="password" id="password" required>
                 </label>
                 <br/>
                 <label>Confirm Password: <br/>
-                    <input type="password" name="password_confirm" required>
+                    <input type="password" id="password_confirm" required>
                 </label>
                 <br/>
                 <input type="submit" value="Sign Up" class="button">
