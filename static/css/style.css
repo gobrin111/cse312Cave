@@ -1,8 +1,14 @@
+/*green: #538d4e*/
+/*yellow: #b59f3b*/
+/*off-white: #e3e3e1*/
+/*white: #f8f8f8*/
+/*black: #121213*/
+
 body {
     background-color: #121213;
     color: #f8f8f8;
     margin: 0;
-    font-family: "Roboto", sans-serif;
+    font-family: "Verdana";
     font-size: 20pt;
 }
 
@@ -68,3 +74,53 @@ body {
     text-align: center;
     padding: 10px;
 }
+
+/* Chat ================================================*/
+
+.chat-box {
+    background-color: #1c1c1c;
+    height: 60vh;
+    overflow-y: scroll;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    text-align: left;
+    padding: 10px;
+}
+
+.chat-input, .send {
+    background-color: #121213;
+    border-radius: 10px;
+    padding: 10px;
+    border: 2px solid #f8f8f8;
+    font-size: 20pt;
+    color: #f8f8f8;
+    font-family: "Verdana";
+}
+
+.send:hover {
+    background-color: #f8f8f8;
+    color: #121213;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #1c1c1c;
+    border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #404040;
+    border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #2e2e2e;
+}
+
+/* Chat ================================================*/
