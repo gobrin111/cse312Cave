@@ -13,36 +13,42 @@ body {
     font-family: "Bebas Neue", sans-serif;
 }
 
-.login {
-    margin-top: 5vh;
-}
 /* START OF WORDLE ANIMATION */
 
+.login-title-container {
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    margin: 10px auto;
+}
+
 .login-title {
-    width: 10vw;
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    grid-gap: 0.4vw;
+    grid-gap: 10px;
+    margin: 10px auto;
 }
 
 .inner {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 4vw;
+    font-size: 50pt;
     color: #f8f8f8;
     width: 100px;
     height: 100px;
     border: 2px solid #3a3a3c;
-    border-radius: 6px;
     transition: transform 300ms ease;
 }
+
 .inner span {
     opacity: 0;
 }
+
 .flip {
     animation: flip 550ms ease forwards;
 }
+
 @keyframes flip {
     0% {
         transform: scaleY(1);
@@ -53,7 +59,8 @@ body {
     }
     100% {
         transform: scaleY(1);
-        background: green;
+        background: #6aaa64;
+        border: 2px solid #6aaa64;
     }
 }
 
