@@ -22,7 +22,7 @@ function wordleFlipCorrect(tiles, tilesArray) {
         setTimeout(() => {
          tile.classList.remove("expand-shrink");
          tile.classList.add("correct-flip");
-        }, (i * 200) + 1200);
+        }, i * 200);
     });
 }
 
@@ -31,7 +31,7 @@ function wordleFlipIncorrect(tiles, tilesArray) {
         setTimeout(() => {
          tile.classList.remove("expand-shrink");
          tile.classList.add("incorrect-flip");
-        }, (i * 200) + 1200);
+        }, i * 200);
     });
 }
 
@@ -52,7 +52,7 @@ function loginUser() {
                 wordleFlipCorrect(tiles, tilesArray);
                 setTimeout(() => {
                     window.location.href = '/';
-                }, 2500);
+                }, 1400);
 
             } else if (this.status === 403) {
                 let tiles = document.getElementsByClassName("inner");
@@ -60,7 +60,7 @@ function loginUser() {
                 wordleFlipIncorrect(tiles, tilesArray);
                 setTimeout(() => {
                     window.location.href = '/login.html';
-                }, 2500);
+                }, 1400);
             }
         }
     };
@@ -86,7 +86,7 @@ function registerUser() {
                 wordleFlipCorrect(tiles, tilesArray);
                 setTimeout(() => {
                     window.location.href = '/login.html';
-                }, 2900);
+                }, 1800);
 
             } else if (this.status === 403) {
                 let tiles = document.getElementsByClassName("inner");
@@ -94,7 +94,7 @@ function registerUser() {
                 wordleFlipIncorrect(tiles, tilesArray);
                 setTimeout(() => {
                     window.location.href = '/register.html';
-                }, 2900);
+                }, 1800);
             }
         }
     };
