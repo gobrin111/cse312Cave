@@ -3,6 +3,28 @@
 /*off-white: #e3e3e1*/
 /*white: #f8f8f8*/
 /*black: #121213*/
+/*darkgrey: #2a2a2a*/
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #1c1c1c;
+    border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #404040;
+    border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #2e2e2e;
+}
 
 body {
     background-color: #121213;
@@ -78,56 +100,54 @@ body {
 
 .main > div {
     flex: 1;
+    justify-content: center;
+    align-items: center;
     text-align: center;
+    padding: 10px 60px;
+}
+
+.card {
+    background-color: #2a2a2a;
+    border-radius: 20px;
+    /*width: 80%;*/
+    height: calc(100vh - 200px);
     padding: 10px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.card > h1 {
+    color: #f8f8f8;
+    font-family: "Bebas Neue", sans-serif;
+    font-size: 40pt;
+    letter-spacing: 4px;
+    margin: 0;
 }
 
 /* Chat ================================================*/
 
-.chat-box {
-    background-color: #1c1c1c;
-    height: 60vh;
-    overflow-y: scroll;
-    margin-bottom: 20px;
-    border-radius: 10px;
-    text-align: left;
-    padding: 10px;
-}
-
-.chat-input, .send {
+.chat-log {
     background-color: #121213;
-    border-radius: 10px;
-    padding: 10px;
-    border: 2px solid #f8f8f8;
-    font-size: 20pt;
-    color: #f8f8f8;
+    border-radius: 20px;
+    width: 100%;
+    height: calc(100% - 135px);
+    margin-bottom: 5px;
+    display: inline-block;
+}
+
+.chat-input {
+    background-color: #121213;
+    border: 2px solid #121213;
+    width: 90%;
+    border-radius: 20px;
+    font-size: 14pt;
+    height: 40px;
     font-family: "Verdana";
-}
-
-.send:hover {
-    background-color: #f8f8f8;
-    color: #121213;
-}
-
-::-webkit-scrollbar {
-    width: 10px;
-}
-
-/* Track */
-::-webkit-scrollbar-track {
-    background: #1c1c1c;
-    border-radius: 10px;
-}
-
-/* Handle */
-::-webkit-scrollbar-thumb {
-    background: #404040;
-    border-radius: 10px;
-}
-
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-    background: #2e2e2e;
+    color: #f8f8f8;
+    -webkit-appearance: none;
+    padding: 5px 10px;
+    display: inline-block;
 }
 
 /* End chat ================================================*/
