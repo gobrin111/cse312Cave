@@ -1,0 +1,26 @@
+[
+  {
+    "message": "Hello, how are you?",
+    "username": "user1",
+    "id": "64ff3c40f734fbb78d26a711",
+    "userId": "001"
+  },
+  {
+    "message": "I'm doing great! How about you?",
+    "username": "user2",
+    "id": "64ff3c41f734fbb78d26a712",
+    "userId": "002"
+  },
+  {
+    "message": "Same here! Excited for the weekend.",
+    "username": "user1",
+    "id": "64ff3c42f734fbb78d26a713",
+    "userId": "001"
+  },
+  {
+    "message": "What plans do you have?",
+    "username": "user3",
+    "id": "64ff3c43f734fbb78d26a714",
+    "userId": "003"
+  }
+]

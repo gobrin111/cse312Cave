@@ -67,10 +67,14 @@ body {
 .title {
     flex: 3;
     font-size: 55pt;
-    margin: 15px auto 0 auto;
     letter-spacing: 3px;
     text-align: center;
     display: inline-block;
+    margin-top: 10px;
+}
+
+hr {
+    margin-top: 10px;
 }
 
 .title > img {
@@ -102,9 +106,9 @@ body {
 .card > h1 {
     color: #f8f8f8;
     font-family: "Bebas Neue", sans-serif;
-    font-size: 40pt;
-    letter-spacing: 4px;
+    font-size: 36pt;
     margin: 0;
+    font-weight: normal;
 }
 
 /* Chat ================================================*/
@@ -135,20 +139,38 @@ body {
 }
 
 .message-container {
-    background-color: #f8f8f8;
     text-align: left;
-    font-size: 14pt;
-    border-radius: 10px;
-    margin: 5px;
+    font-size: 12pt;
+    margin: 2px;
     width: calc(100% - 30px);
-    color: #121213;
-    padding: 5px 10px;
     display: inline-block;
+    font-weight: bold;
 }
 
-.message-container > span {
-    font-size: 12pt;
+.message-container > button {
+    border-radius: 5px;
+    font-family: "Verdana";
     font-weight: bold;
+    border: 2px solid #f8f8f8;
+    background-color: #121213;
+    color: #f8f8f8;
+    transition: 0.25s;
+}
+
+.message-container > button:hover {
+    background-color: #f8f8f8;
+    color: #121213;
+}
+
+.message-container > div {
+    font-size: 14pt;
+    font-weight: normal;
+    background-color: #f8f8f8;
+    color: #121213;
+    border-radius: 10px;
+    margin: 5px;
+    padding: 5px 10px;
+    display: inline-block;
 }
 
 /* End chat ================================================*/
