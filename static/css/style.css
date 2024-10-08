@@ -6,24 +6,7 @@
 /*darkgrey: #2a2a2a*/
 
 ::-webkit-scrollbar {
-    width: 10px;
-}
-
-/* Track */
-::-webkit-scrollbar-track {
-    background: #1c1c1c;
-    border-radius: 10px;
-}
-
-/* Handle */
-::-webkit-scrollbar-thumb {
-    background: #404040;
-    border-radius: 10px;
-}
-
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-    background: #2e2e2e;
+    width: 0;
 }
 
 body {
@@ -109,7 +92,6 @@ body {
 .card {
     background-color: #2a2a2a;
     border-radius: 20px;
-    /*width: 80%;*/
     height: calc(100vh - 200px);
     padding: 10px;
     justify-content: center;
@@ -130,10 +112,12 @@ body {
 .chat-log {
     background-color: #121213;
     border-radius: 20px;
-    width: 100%;
-    height: calc(100% - 135px);
-    margin-bottom: 5px;
+    width: 95%;
+    height: calc(100% - 150px);
+    margin-bottom: 10px;
     display: inline-block;
+    padding: 5px;
+    overflow-y: scroll;
 }
 
 .chat-input {
@@ -148,6 +132,22 @@ body {
     -webkit-appearance: none;
     padding: 5px 10px;
     display: inline-block;
+}
+
+.message-container {
+    background-color: #f8f8f8;
+    text-align: left;
+    font-size: 14pt;
+    border-radius: 10px;
+    margin: 5px;
+    width: calc(100% - 30px);
+    color: #121213;
+    padding: 5px 10px;
+    display: inline-block;
+}
+
+.message-container > span {
+    font-size: 12pt;
 }
 
 /* End chat ================================================*/
