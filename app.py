@@ -12,6 +12,7 @@ app = Flask(__name__)
 mongo_client = MongoClient("mongo")
 db = mongo_client["wurdle"]
 user_collection = db["users"]
+chat_collection = db["chat"]
 
 
 # Root path
@@ -153,6 +154,7 @@ def register():
     response.headers.set("X-Content-Type-Options", "nosniff")
     return response
 
+
 @app.route('/login', methods=['POST'])
 def login():
     data = request.get_json()
@@ -188,6 +190,78 @@ def logout():
 
     response = make_response(redirect(url_for('index')))
     response.set_cookie('auth_token', '', max_age=0, httponly=True)
+    return response
+
+
+@app.route('/chat-messages', methods=['POST'])
+def post_message():  # this is done
+    data = request.get_json()
+    message = html.escape(data["message"])
+    print(message)
+    response = make_response(json.dumps({"message": "Message Posted"}), 200)
+    response.headers.set("Content-Type", "application/json")
+    response.headers.set("X-Content-Type-Options", "nosniff")
+    if "auth_token" in request.cookies:
+        auth_token = request.cookies.get("auth_token")
+        auth_token = hashlib.sha256(auth_token.encode('utf-8')).hexdigest()
+        if user_collection.find_one({"auth_token": auth_token}):
+            account = user_collection.find_one({"auth_token": auth_token})
+            username = account.get("username")
+            print(username)
+            print("posted something")
+            chat_collection.insert_one({"username": username, "message": message})
+    else:
+        response = make_response(json.dumps({"message": "no account"}), 403)
+    return response
+
+
+@app.route('/chat-messages', methods=['GET'])
+def get_messages(): #done
+    messages = chat_collection.find({})
+    message_display = []
+    for message in messages:
+        print("this is the issue")
+        print(message)
+        background_color = 'white'
+        if "token" in request.cookies:
+            if user_collection.find_one(
+                    {"token": hashlib.sha256(request.cookies["token"].encode("utf-8")).hexdigest()}):
+                if user_collection.find_one(
+                        {"token": hashlib.sha256(request.cookies["token"].encode("utf-8")).hexdigest()})["username"] == \
+                        message["username"]:
+                    background_color = 'green'
+        message_display.append({
+            "message": message["message"],
+            "username": message["username"],
+            "id": str(message["_id"]),
+            "color": background_color
+        })
+    message_display = json.dumps(message_display)
+    response = make_response(message_display, 200)
+    response.headers.set("Content-Type", "application/json")
+    response.headers.set("X-Content-Type-Options", "nosniff")
+    return response
+
+
+@app.route('/chat-messages/<message_id>', methods=['POST'])
+def delete_message(message_id):  # this is done
+    # message_id = ObjectId(request.path[15:len(request.path)])
+    message_id = ObjectId(message_id)
+    message = chat_collection.find_one({"_id": message_id})
+    flag = False
+    if "auth_token" in request.cookies:
+        auth_token = request.cookies.get("auth_token")
+        auth_token = hashlib.sha256(auth_token.encode('utf-8')).hexdigest()
+        if user_collection.find_one({"auth_token": auth_token}):
+            account = user_collection.find_one({"auth_token": auth_token})
+            if message["username"] == account["username"]:
+                chat_collection.delete_one({"_id": message_id})
+                flag = True
+    if flag:
+        response = make_response(json.dumps({"message": "post deleted"}), 204)
+    else:
+        response = make_response(json.dumps({"message": "action not possible"}), 403)
+    response.headers.set("X-Content-Type-Options", "nosniff")
     return response
 
 
