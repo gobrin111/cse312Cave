@@ -1,5 +1,5 @@
 let chatMessages = {};
-setInterval(updateChat, 1000);
+setInterval(updateChat, 500);
 function sendChat() {
     let userInput = document.getElementById("chat-input");
     let userInputValue = userInput.value;
