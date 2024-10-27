@@ -141,7 +141,7 @@ hr {
 .message-container {
     text-align: left;
     font-size: 12pt;
-    margin: 2px;
+    margin: 5px 2px;
     width: calc(100% - 30px);
     display: inline-block;
     font-weight: bold;
@@ -165,12 +165,20 @@ hr {
 .message-container > div {
     font-size: 14pt;
     font-weight: normal;
-    background-color: #f8f8f8;
-    color: #121213;
     border-radius: 10px;
     margin: 5px;
     padding: 5px 10px;
     display: inline-block;
+}
+
+.other {
+    background-color: #f8f8f8;
+    color: #121213;
+}
+
+.original {
+    background-color: #538d4e;
+    color: #f8f8f8;
 }
 
 /* End chat ================================================*/
