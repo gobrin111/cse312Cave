@@ -34,12 +34,10 @@ function chatMessageHTML(messageJSON) {
 
     let messageHTML = `
         <div class="message-container" id="message_${messageId}">
-            <button onclick="deleteMessage('${messageId}')"> X </button> ${username} &emsp;
-            <button onclick="likeMessage('${messageId}')"> 👍 </button> ${like_count}
-            <br>
-            <div class="${origin}">
-                ${message}
-            </div>
+            ${username} &emsp;
+            <button onclick="likeMessage('${messageId}')"> 👍 </button> ${like_count} <br>
+            <button onclick="deleteMessage('${messageId}')"> X </button>
+            <div class="${origin}"> ${message} </div>
         </div>
         `
     return messageHTML
@@ -63,8 +61,7 @@ function likeMessage(messageId){
             console.log(this.response);
         }
     }
-    // getting the user's auth_token and sending it with the messageid
-    // const auth_token = getCookie("auth_token");
+
     request.open("POST", "/chat-messages/like/" + messageId);
     request.send();
 }
