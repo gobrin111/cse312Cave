@@ -106,6 +106,6 @@ def logout():
         user_collection.update_one({"auth_token": hashlib.sha256(auth_token.encode('utf-8')).hexdigest()},
                                    {"$set": {"auth_token": None}})
 
-    response = make_response(redirect(url_for('index')))
+    response = make_response(redirect(url_for('root.index')))
     response.set_cookie('auth_token', '', max_age=0, httponly=True)
     return response

@@ -42,9 +42,9 @@ def register_html():
     return response
 
 
-@root_bp.route("/static/css/styles.css")
+@root_bp.route("/static/css/style.css")
 def css():
-    response = make_response(send_from_directory("static/css", "styles.css"))
+    response = make_response(send_from_directory("static/css", "style.css"))
     response.headers.set("Content-Type", "text/css")
     response.headers.set("X-Content-Type-Options", "nosniff")
     return response
