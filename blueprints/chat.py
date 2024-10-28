@@ -114,6 +114,9 @@ def like_message(message_id):
             else:
                 like_collection.insert_one({"username": username, "message_id": message_id})
 
+            updated_like_count = like_collection.count_documents({"message_id": message_id})
+
+            response = make_response(json.dumps({"message": "post_liked", "like_count": updated_like_count}),200)
         else:
             response = make_response(json.dumps({"message": "action not possible"}), 403)
 

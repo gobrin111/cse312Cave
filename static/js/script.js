@@ -35,7 +35,8 @@ function chatMessageHTML(messageJSON) {
     let messageHTML = `
         <div class="message-container" id="message_${messageId}">
             ${username} &emsp;
-            <button onclick="likeMessage('${messageId}')"> 👍 </button> ${like_count} <br>
+            <button onclick="likeMessage('${messageId}')"> 👍 </button> 
+            <span id="like_count_${messageId}">${like_count}</span> <br>
             <button onclick="deleteMessage('${messageId}')"> X </button>
             <div class="${origin}"> ${message} </div>
         </div>
@@ -59,6 +60,8 @@ function likeMessage(messageId){
     request.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
             console.log(this.response);
+            const response = JSON.parse(this.response)
+            document.getElementById(`like_count_${messageId}`).textContent = response.like_count;
         }
     }
 
