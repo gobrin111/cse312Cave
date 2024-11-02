@@ -34,11 +34,11 @@ function chatMessageHTML(messageJSON) {
 
     let messageHTML = `
         <div class="message-container" id="message_${messageId}">
-            ${username} &emsp;
-            <button onclick="likeMessage('${messageId}')"> 👍 </button> 
-            <span id="like_count_${messageId}">${like_count}</span> <br>
-            <button onclick="deleteMessage('${messageId}')"> X </button>
-            <div class="${origin}"> ${message} </div>
+            <button class="delete-button" onclick="deleteMessage('${messageId}')"> X </button>
+            ${username} <br>
+            <div class="${origin}"> ${message} </div> <br>
+            <button class="like-button" onclick="likeMessage('${messageId}')"> 👍 </button> 
+            <span id="like_count_${messageId}">${like_count}</span>
         </div>
         `
     return messageHTML

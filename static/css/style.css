@@ -147,7 +147,7 @@ hr {
     font-weight: bold;
 }
 
-.message-container > button {
+.delete-button {
     border-radius: 5px;
     font-family: "Verdana";
     font-weight: bold;
@@ -157,16 +157,26 @@ hr {
     transition: 0.25s;
 }
 
-.message-container > button:hover {
+.delete-button:hover {
     background-color: #f8f8f8;
     color: #121213;
+}
+
+.like-button {
+    background-color: #121213;
+    border: 1px solid #121213;
+    transition:0.25s
+}
+
+.like-button:hover {
+    font-size: 14pt;
 }
 
 .message-container > div {
     font-size: 14pt;
     font-weight: normal;
     border-radius: 10px;
-    margin: 5px;
+    margin: 10px 5px 5px 5px;
     padding: 5px 10px;
     display: inline-block;
 }
