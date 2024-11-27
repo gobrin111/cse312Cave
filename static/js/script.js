@@ -3,7 +3,7 @@ setInterval(updateChat, 500);
 
 document.addEventListener("keypress", function (event) {
     // Check if the Enter key is pressed and the chat input field is focused
-    if (event.code === "Enter" && document.activeElement === document.getElementById("chat-input")) {
+    if (event.code === "Enter" && document.activeElement == document.getElementById("chat-input")) {
         sendChat();
     }
 });
