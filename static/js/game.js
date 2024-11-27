@@ -36,13 +36,16 @@ function resetGame() {
 function isWord(word) {
     return fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${word.toLowerCase()}`)
         .then(response => {
-            if (response.ok) {
+            if (response.ok || wordList.includes(word)) {
                 return true;
             } else {
                 return false;
             }
         })
         .catch(error => {
+            if (wordList.includes(word)){
+                return true;
+            }
             return false;
         });
 }
@@ -76,7 +79,7 @@ document.addEventListener("keydown", (e) => {
 
                         if (input[currentRow].join('') == word) {
                             let score = currentRow;
-                            resetGame();
+                            setTimeout(resetGame, 2000);
                         } else {
                             currentRow++;
                             currentCol = 0;
@@ -84,7 +87,7 @@ document.addEventListener("keydown", (e) => {
 
                         if (currentRow == 6) {
                             let score = currentRow;
-                            resetGame();
+                            setTimeout(resetGame, 2000);
                         }
 
                     } else {
