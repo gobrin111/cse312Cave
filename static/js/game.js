@@ -25,55 +25,77 @@ function resetGame() {
             let textElement = tile.querySelector(".inner-text");
             textElement.innerHTML = '';
             textElement.style.opacity = "1";
-            tile.classList.remove("expand-shrink");
-            tile.classList.remove("correct-flip", "partial-flip", "incorrect-flip");
+            tile.classList.remove("expand-shrink", "correct-flip", "partial-flip", "incorrect-flip");
             tile.style.borderColor = "#3a3a3c";
             tile.style.backgroundColor = "#121213";
         });
     });
 }
 
+function isWord(word) {
+    return fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${word.toLowerCase()}`)
+        .then(response => {
+            if (response.ok) {
+                return true;
+            } else {
+                return false;
+            }
+        })
+        .catch(error => {
+            return false;
+        });
+}
+
 document.addEventListener("keydown", (e) => {
     if (document.activeElement != document.getElementById("chat-input")) {
-        const key = e.key.toUpperCase();
+        let key = e.key.toUpperCase();
 
         if (key === "ENTER") {
             if (currentCol == 5) {
-                let tilesArray = rows[currentRow].querySelectorAll(".inner");
-                tilesArray.forEach((tile, i) => {
-                    setTimeout(() => {
-                        let textElement = tile.querySelector(".inner-text");
-                        let guessChar = textElement.textContent;
-                        let actualChar = word[i];
+                isWord(input[currentRow].join('')).then(result => {
+                    if (result) {
+                        let tilesArray = rows[currentRow].querySelectorAll(".inner");
+                        tilesArray.forEach((tile, i) => {
+                            setTimeout(() => {
+                                let textElement = tile.querySelector(".inner-text");
+                                let guessChar = textElement.textContent;
+                                let actualChar = word[i];
 
-                        tile.classList.remove("expand-shrink");
-                        if (guessChar == actualChar) {
-                            tile.classList.add("correct-flip");
-                        } else if (guessChar != actualChar && word.includes(guessChar)) {
-                            tile.classList.add("partial-flip");
+                                tile.classList.remove("expand-shrink");
+                                if (guessChar == actualChar) {
+                                    tile.classList.add("correct-flip");
+                                } else if (word.includes(guessChar)) {
+                                    tile.classList.add("partial-flip");
+                                } else {
+                                    tile.classList.add("incorrect-flip");
+                                }
+
+                            }, i * 200);
+                        });
+
+                        if (input[currentRow].join('') == word) {
+                            let score = currentRow;
+                            resetGame();
                         } else {
-                            tile.classList.add("incorrect-flip");
+                            currentRow++;
+                            currentCol = 0;
                         }
 
-                    }, i * 200);
+                        if (currentRow == 6) {
+                            let score = currentRow;
+                            resetGame();
+                        }
+
+                    } else {
+                        alert("Word not found");
+                    }
+
+                }).catch(error => {
+                    alert("Could not verify the word");
                 });
 
-                /*
-                Score: 0 - Guessed on first try, 6 - Failed
-                */
-
-                if (input[currentRow].join('') === word) {
-                    let score = currentRow;
-                    resetGame();
-                } else {
-                    currentRow++;
-                    currentCol = 0;
-                }
-                // check if user runs out of guesses
-                if (currentRow == 6) {
-                    let score = currentRow;
-                    resetGame();
-                }
+            } else {
+                alert("Word not long enough");
             }
 
         } else if (key === "BACKSPACE") {
@@ -85,7 +107,7 @@ document.addEventListener("keydown", (e) => {
                 let tile = tilesArray[currentCol];
                 let textElement = tile.querySelector(".inner-text");
                 textElement.innerHTML = '';
-                textElement.style.opacity = "1";
+                textElement.style.opacity = "0";
                 tile.classList.remove("expand-shrink");
                 tile.style.borderColor = "#3a3a3c";
             }
