@@ -10,7 +10,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
 </head>
 <body>
-    <script src="static/js/script.js"></script>
     <nav class="header">
         <div class="left-header-element">
             {% if username %}
@@ -49,7 +48,132 @@
             </div>
         </div>
 
-        <div class="game"> Game </div>
+        <div class="game">
+
+            <span class="current-score"> Current Score: 0 </span>
+
+            <section class="row-container">
+                <div class="row" id="row-1">
+                    <div class="inner">
+                        <span class="inner-text"></span>
+                    </div>
+                    <div class="inner">
+                        <span class="inner-text"></span>
+                    </div>
+                    <div class="inner">
+                        <span class="inner-text"></span>
+                    </div>
+                    <div class="inner">
+                        <span class="inner-text"></span>
+                    </div>
+                    <div class="inner">
+                        <span class="inner-text"></span>
+                    </div>
+                </div>
+            </section>
+
+            <section class="row-container">
+                <div class="row" id="row-2">
+                    <div class="inner">
+                        <span class="inner-text"></span>
+                    </div>
+                    <div class="inner">
+                        <span class="inner-text"></span>
+                    </div>
+                    <div class="inner">
+                        <span class="inner-text"></span>
+                    </div>
+                    <div class="inner">
+                        <span class="inner-text"></span>
+                    </div>
+                    <div class="inner">
+                        <span class="inner-text"></span>
+                    </div>
+                </div>
+            </section>
+
+            <section class="row-container">
+                <div class="row" id="row-3">
+                    <div class="inner">
+                        <span class="inner-text"></span>
+                    </div>
+                    <div class="inner">
+                        <span class="inner-text"></span>
+                    </div>
+                    <div class="inner">
+                        <span class="inner-text"></span>
+                    </div>
+                    <div class="inner">
+                        <span class="inner-text"></span>
+                    </div>
+                    <div class="inner">
+                        <span class="inner-text"></span>
+                    </div>
+                </div>
+            </section>
+
+            <section class="row-container">
+                <div class="row" id="row-4">
+                    <div class="inner">
+                        <span class="inner-text"></span>
+                    </div>
+                    <div class="inner">
+                        <span class="inner-text"></span>
+                    </div>
+                    <div class="inner">
+                        <span class="inner-text"></span>
+                    </div>
+                    <div class="inner">
+                        <span class="inner-text"></span>
+                    </div>
+                    <div class="inner">
+                        <span class="inner-text"></span>
+                    </div>
+                </div>
+            </section>
+
+            <section class="row-container">
+                <div class="row" id="row-5">
+                    <div class="inner">
+                        <span class="inner-text"></span>
+                    </div>
+                    <div class="inner">
+                        <span class="inner-text"></span>
+                    </div>
+                    <div class="inner">
+                        <span class="inner-text"></span>
+                    </div>
+                    <div class="inner">
+                        <span class="inner-text"></span>
+                    </div>
+                    <div class="inner">
+                        <span class="inner-text"></span>
+                    </div>
+                </div>
+            </section>
+
+            <section class="row-container">
+                <div class="row" id="row-6">
+                    <div class="inner">
+                        <span class="inner-text"></span>
+                    </div>
+                    <div class="inner">
+                        <span class="inner-text"></span>
+                    </div>
+                    <div class="inner">
+                        <span class="inner-text"></span>
+                    </div>
+                    <div class="inner">
+                        <span class="inner-text"></span>
+                    </div>
+                    <div class="inner">
+                        <span class="inner-text"></span>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <script src="static/js/game.js"></script>
 
         <div class="chat">
             <div class="card">
@@ -57,15 +181,11 @@
                 <div class="chat-log">
                 </div>
                 <input id="chat-input" type="text" placeholder="Type Message" class="chat-input">
-                <script>
-                    document.addEventListener("keypress", function (event) {
-                        if (event.code === "Enter") {
-                            sendChat();
-                        }
-                    });
-                </script>
             </div>
         </div>
+
+        <script src="static/js/script.js"></script>
+
     </section>
 </body>
 </html>

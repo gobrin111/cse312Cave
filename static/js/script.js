@@ -1,6 +1,13 @@
 let chatMessages = {};
 setInterval(updateChat, 500);
 
+document.addEventListener("keypress", function (event) {
+    // Check if the Enter key is pressed and the chat input field is focused
+    if (event.code === "Enter" && document.activeElement === document.getElementById("chat-input")) {
+        sendChat();
+    }
+});
+
 function sendChat() {
     let userInput = document.getElementById("chat-input");
     let userInputValue = userInput.value;
@@ -17,7 +24,7 @@ function sendChat() {
     request.setRequestHeader("Content-Type", "application/json");
     request.send(JSON.stringify(messageJSON));
 
-    userInput.focus();
+    // userInput.focus();
 }
 
 function chatMessageHTML(messageJSON) {

@@ -74,6 +74,14 @@ def wordFlip_js():
     return response
 
 
+@root_bp.route("/static/js/game.js")
+def game_js():
+    response = make_response(send_from_directory("static/js", "game.js"))
+    response.headers.set("Content-Type", "text/javascript")
+    response.headers.set("X-Content-Type-Options", "nosniff")
+    return response
+
+
 @root_bp.route("/static/images/wordle-favicon.ico")
 def favicon():
     response = make_response(send_from_directory("static/images", "wordle-favicon.ico"))

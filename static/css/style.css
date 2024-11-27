@@ -90,6 +90,10 @@ hr {
     justify-content: center;
     align-items: center;
     text-align: center;
+    /*padding: 10px 60px;*/
+}
+
+.leaderboard, .chat {
     padding: 10px 60px;
 }
 
@@ -192,3 +196,117 @@ hr {
 }
 
 /* End chat ================================================*/
+/* Game ================================================*/
+
+.current-score {
+    display: block;
+    margin: 10px auto;
+}
+
+/* START OF WORDLE ANIMATION */
+
+.row-container {
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+.row {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    /*grid-gap: 0;*/ /* using width to distribute cells equally */
+    margin: 0.25vw auto;
+    width: 95%;
+}
+
+.inner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 38pt; /* FIGURE OUT LATER ***************************************************/
+    color: #f8f8f8;
+    width: 85%;
+    aspect-ratio: 1 / 1;
+    border: 2px solid #3a3a3c;
+    transition: transform 300ms ease;
+}
+
+.inner span {
+    opacity: 0;
+}
+
+.correct-flip {
+    animation: correctFlip 550ms ease forwards;
+}
+
+.partial-flip {
+    animation: partialFlip 550ms ease forwards;
+}
+
+.incorrect-flip {
+    animation: incorrectFlip 550ms ease forwards;
+}
+
+@keyframes correctFlip {
+    0% {
+        transform: scaleY(1);
+    }
+    50% {
+        transform: scaleY(0);
+        background: #121213;
+    }
+    100% {
+        transform: scaleY(1);
+        background: #538d4e;
+        border: 2px solid #538d4e;
+    }
+}
+
+@keyframes partialFlip {
+    0% {
+        transform: scaleY(1);
+    }
+    50% {
+        transform: scaleY(0);
+        background: #121213;
+    }
+    100% {
+        transform: scaleY(1);
+        background: #b59f3b;
+        border: 2px solid #b59f3b;
+    }
+}
+
+@keyframes incorrectFlip {
+    0% {
+        transform: scaleY(1);
+    }
+    50% {
+        transform: scaleY(0);
+        background: #121213;
+    }
+    100% {
+        transform: scaleY(1);
+        background: #3a3a3c;
+        border: 2px solid #3a3a3c;
+    }
+}
+
+.expand-shrink {
+    animation: expandThenShrink 400ms ease;
+}
+
+@keyframes expandThenShrink {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* END OF WORDLE ANIMATION */
+/* End Game ================================================*/
