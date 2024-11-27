@@ -203,6 +203,10 @@ hr {
     margin: 10px auto;
 }
 
+.game {
+    padding-top: 10px;
+}
+
 /* START OF WORDLE ANIMATION */
 
 .row-container {
@@ -223,7 +227,8 @@ hr {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 38pt; /* FIGURE OUT LATER ***************************************************/
+    font-family: "Bebas Neue", sans-serif;
+    font-size: 3vw;
     color: #f8f8f8;
     width: 85%;
     aspect-ratio: 1 / 1;

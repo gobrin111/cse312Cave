@@ -1,8 +1,37 @@
 let currentRow = 0;
 let currentCol = 0;
-let word = "PLANT";
 let input = [['', '', '', '', ''], ['', '', '', '', ''], ['', '', '', '', ''], ['', '', '', '', ''], ['', '', '', '', ''], ['', '', '', '', '']]
 let rows = document.querySelectorAll(".row");
+
+let wordList = ["ALBUM","HINGE","MONEY","SCRAP","GAMER","GLASS","SCOUR","BEING","DELVE","YIELD","METAL","TIPSY","SLUNG","FARCE","GECKO","SHINE","CANNY","MIDST","BADGE","HOMER","TRAIN","STORY","HAIRY","FORGO","LARVA","TRASH","ZESTY","SHOWN","HEIST","ASKEW","INERT","OLIVE","PLANT","OXIDE","CARGO","FOYER","FLAIR","AMPLE","CHEEK","SHAME","MINCE","CHUNK","ROYAL","SQUAD","BLACK","STAIR","SCARE","FORAY","COMMA","NATAL","SHAWL","FEWER","TROPE","SNOUT","LOWLY","STOVE","SHALL","FOUND","NYMPH","EPOXY","DEPOT","CHEST","PURGE","SLOSH","THEIR","RENEW","ALLOW","SAUTE","MOVIE","CATER","TEASE","SMELT","FOCUS","TODAY","WATCH","LAPSE","MONTH","SWEET","HOARD","CLOTH","BRINE","AHEAD","MOURN","NASTY","RUPEE","CHOKE","CHANT","SPILL","VIVID","BLOKE","TROVE","THORN","OTHER","TACIT","SWILL","DODGE","SHAKE","CAULK","AROMA","CYNIC","ROBIN","ULTRA","ULCER","PAUSE","HUMOR","FRAME","ELDER","SKILL","ALOFT","PLEAT","SHARD","MOIST","THOSE","LIGHT","WRUNG","COULD","PERKY","MOUNT","WHACK","SUGAR","KNOLL","CRIMP","WINCE","PRICK","ROBOT","POINT","PROXY","SHIRE","SOLAR","PANIC","TANGY","ABBEY","FAVOR","DRINK","QUERY","GORGE","CRANK","SLUMP","BANAL","TIGER","SIEGE","TRUSS","BOOST","REBUS","UNIFY","TROLL","TAPIR","ASIDE","FERRY","ACUTE","PICKY","WEARY","GRIPE","CRAZE","PLUCK","BRAKE","BATON","CHAMP","PEACH","USING","TRACE","VITAL","SONIC","MASSE","CONIC","VIRAL","RHINO","BREAK","TRIAD","EPOCH","USHER","EXULT","GRIME","CHEAT","SOLVE","BRING","PROVE","STORE","TILDE","CLOCK","WROTE","RETCH","PERCH","ROUGE","RADIO","SURER","FINER","VODKA","HERON","CHILL","GAUDY","PITHY","SMART","BADLY","ROGUE","GROUP","FIXER","GROIN","DUCHY","COAST","BLURT","PULPY","ALTAR","GREAT","BRIAR","CLICK","GOUGE","WORLD","ERODE","BOOZY","DOZEN","FLING","GROWL","ABYSS","STEED","ENEMA","JAUNT","COMET","TWEED","PILOT","DUTCH","BELCH","OUGHT","DOWRY","THUMB","HYPER","HATCH","ALONE","MOTOR","ABACK","GUILD","KEBAB","SPEND","FJORD","ESSAY","SPRAY","SPICY","AGATE","SALAD","BASIC","MOULT","CORNY","FORGE","CIVIC","ISLET","LABOR","GAMMA","LYING","AUDIT","ROUND","LOOPY","LUSTY","GOLEM","GONER","GREET","START","LAPEL","BIOME","PARRY","SHRUB","FRONT","WOOER","TOTEM","FLICK","DELTA","BLEED","ARGUE","SWIRL","ERROR","AGREE","OFFAL","FLUME","CRASS","PANEL","STOUT","BRIBE","DRAIN","YEARN","PRINT","SEEDY","IVORY","BELLY","STAND","FIRST","FORTH","BOOBY","FLESH","UNMET","LINEN","MAXIM","POUND","MIMIC","SPIKE","CLUCK","CRATE","DIGIT","REPAY","SOWER","CRAZY","ADOBE","OUTDO","TRAWL","WHELP","UNFED","PAPER","STAFF","CROAK","HELIX","FLOSS","PRIDE","BATTY","REACT","MARRY","ABASE","COLON","STOOL","CRUST","FRESH","DEATH","MAJOR","FEIGN","ABATE","BENCH","QUIET","GRADE","STINK","KARMA","MODEL","DWARF","HEATH","SERVE","NAVAL","EVADE","FOCAL","BLUSH","AWAKE","HUMPH","SISSY","REBUT","CIGAR"];
+
+function getRandomWord() {
+    let randomIndex = Math.floor(Math.random() * wordList.length);  // Generate a random index
+    return wordList[randomIndex];  // Return the word at that index
+}
+
+let word = getRandomWord();
+console.log(word);
+
+function resetGame() {
+    currentRow = 0;
+    currentCol = 0;
+    input = [['', '', '', '', ''], ['', '', '', '', ''], ['', '', '', '', ''], ['', '', '', '', ''], ['', '', '', '', ''], ['', '', '', '', '']];
+    word = getRandomWord();
+    console.log(word);
+    rows.forEach(row => {
+        let tilesArray = row.querySelectorAll(".inner");
+        tilesArray.forEach((tile, i) => {
+            let textElement = tile.querySelector(".inner-text");
+            textElement.innerHTML = '';
+            textElement.style.opacity = "1";
+            tile.classList.remove("expand-shrink");
+            tile.classList.remove("correct-flip", "partial-flip", "incorrect-flip");
+            tile.style.borderColor = "#3a3a3c";
+            tile.style.backgroundColor = "#121213";
+        });
+    });
+}
 
 document.addEventListener("keydown", (e) => {
     if (document.activeElement != document.getElementById("chat-input")) {
@@ -28,9 +57,22 @@ document.addEventListener("keydown", (e) => {
 
                     }, i * 200);
                 });
-                if (currentRow < 5) {
-                    currentRow ++;
+
+                /*
+                Score: 0 - Guessed on first try, 6 - Failed
+                */
+
+                if (input[currentRow].join('') === word) {
+                    let score = currentRow;
+                    resetGame();
+                } else {
+                    currentRow++;
                     currentCol = 0;
+                }
+                // check if user runs out of guesses
+                if (currentRow == 6) {
+                    let score = currentRow;
+                    resetGame();
                 }
             }
 
@@ -40,8 +82,8 @@ document.addEventListener("keydown", (e) => {
                 input[currentRow][currentCol] = ''
 
                 let tilesArray = rows[currentRow].querySelectorAll(".inner");
-                tile = tilesArray[currentCol];
-                textElement = tile.querySelector(".inner-text");
+                let tile = tilesArray[currentCol];
+                let textElement = tile.querySelector(".inner-text");
                 textElement.innerHTML = '';
                 textElement.style.opacity = "1";
                 tile.classList.remove("expand-shrink");
@@ -53,8 +95,8 @@ document.addEventListener("keydown", (e) => {
                 input[currentRow][currentCol] = key
 
                 let tilesArray = rows[currentRow].querySelectorAll(".inner");
-                tile = tilesArray[currentCol];
-                textElement = tile.querySelector(".inner-text");
+                let tile = tilesArray[currentCol];
+                let textElement = tile.querySelector(".inner-text");
                 textElement.innerHTML = key;
                 textElement.style.opacity = "1";
                 tile.classList.add("expand-shrink");
