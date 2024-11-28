@@ -95,7 +95,11 @@ document.addEventListener("keydown", (e) => {
                                 if (this.readyState === 4 && this.status === 200) {
                                     console.log(this.response);
                                     const response = JSON.parse(this.response)
-                                    document.getElementById(`score`).textContent = "Current Score: " + response.score;
+                                    if (response.score === "invalid"){
+                                        document.getElementById(`score`).textContent = "Login for Score";
+                                    } else {
+                                        document.getElementById(`score`).textContent = "Current Score: " + response.score;
+                                    }
                                 }
                             }
 
@@ -118,7 +122,11 @@ document.addEventListener("keydown", (e) => {
                             request.onreadystatechange = function () {
                                 console.log(this.response);
                                 const response = JSON.parse(this.response)
-                                document.getElementById(`score`).textContent = "Current Score: " + response.score;
+                                if (response.score === "invalid"){
+                                    document.getElementById(`score`).textContent = "Login for Score";
+                                } else {
+                                    document.getElementById(`score`).textContent = "Current Score: " + response.score;
+                                }
                             }
 
                             request.open("POST", "/send_score");

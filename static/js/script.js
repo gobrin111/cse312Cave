@@ -7,7 +7,11 @@ window.addEventListener("load", (event) => {
         if (this.readyState === 4 && this.status === 200) {
             console.log(this.response);
             const response = JSON.parse(this.response)
-            document.getElementById(`score`).textContent = "Current Score: " + response.score;
+            if (response.score === "invalid"){
+                document.getElementById(`score`).textContent = "Login for Score";
+            } else {
+                document.getElementById(`score`).textContent = "Current Score: " + response.score;
+            }
         }
     }
 

@@ -33,6 +33,8 @@ def send_score():
                 response = make_response({"score": new_score}, 200)
             else:
                 score_collection.insert_one({"username": username, "score": score})
+    else:
+        response = make_response({"score": "invalid"}, 200)
 
     response.headers.set("Content-Type", "application/json")
     response.headers.set("X-Content-Type-Options", "nosniff")
