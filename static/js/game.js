@@ -59,6 +59,10 @@ document.addEventListener("keydown", (e) => {
                 isWord(input[currentRow].join('')).then(result => {
                     if (result) {
                         let tilesArray = rows[currentRow].querySelectorAll(".inner");
+                        let charFreq = {};
+                        for (let char of word){
+                            charFreq[char] = (charFreq[char] || 0) + 1;
+                        }
                         tilesArray.forEach((tile, i) => {
                             setTimeout(() => {
                                 let textElement = tile.querySelector(".inner-text");
@@ -66,10 +70,12 @@ document.addEventListener("keydown", (e) => {
                                 let actualChar = word[i];
 
                                 tile.classList.remove("expand-shrink");
-                                if (guessChar == actualChar) {
+                                if (guessChar == actualChar && charFreq[guessChar] > 0) {
                                     tile.classList.add("correct-flip");
-                                } else if (word.includes(guessChar)) {
+                                    charFreq[guessChar]--;
+                                } else if (word.includes(guessChar) && charFreq[guessChar] > 0) {
                                     tile.classList.add("partial-flip");
+                                    charFreq[guessChar]--;
                                 } else {
                                     tile.classList.add("incorrect-flip");
                                 }
