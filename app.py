@@ -37,10 +37,10 @@ def handle_message():
 
 @app.before_request
 def before_request():
-    if request.headers.get('X-Forwarded-Proto', 'http') == 'http':
-        url = request.url.replace('http://', 'https://', 1)
-        code = 301
-        return redirect(url, code=code)
+    if os.getenv('HEROKU') == '1':
+        if request.headers.get('X-Forwarded-Proto', 'http') == 'http':
+            url = request.url.replace('http://', 'https://', 1)
+            return redirect(url, code=301)
 
 
 @socketio.on("test")
