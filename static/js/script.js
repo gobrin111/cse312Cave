@@ -1,5 +1,23 @@
 let chatMessages = {};
-setInterval(updateChat, 500);
+let ws = true;
+
+if(ws){
+    const socket = io({autoConnect: false})
+    socket.connect()
+}
+
+socket.on("connect", function(){
+    socket.emit("test", "user_stuff")
+})
+
+socket.on("updateChat", function (server_data){
+    addMessageToChat(server_data)
+})
+
+if(!ws){
+    setInterval(updateChat, 500);
+}
+
 
 window.addEventListener("load", (event) => {
     const request = new XMLHttpRequest();
@@ -33,16 +51,22 @@ function sendChat() {
     let userInputValue = userInput.value;
 
     userInput.value = "";
-    const request = new XMLHttpRequest();
-    request.onreadystatechange = function () {
-        if (this.readyState === 4 && this.status === 200) {
-            console.log(this.response);
+    if (ws){
+        socket.emit("sendChat", userInputValue)
+
+    } else {
+        const request = new XMLHttpRequest();
+        request.onreadystatechange = function () {
+            if (this.readyState === 4 && this.status === 200) {
+                console.log(this.response);
+            }
         }
+        const messageJSON = {"message": userInputValue};
+        request.open("POST", "/chat-messages");
+        request.setRequestHeader("Content-Type", "application/json");
+        request.send(JSON.stringify(messageJSON));
     }
-    const messageJSON = {"message": userInputValue};
-    request.open("POST", "/chat-messages");
-    request.setRequestHeader("Content-Type", "application/json");
-    request.send(JSON.stringify(messageJSON));
+
 
     // userInput.focus();
 }
