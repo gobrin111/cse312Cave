@@ -101,7 +101,7 @@ def login():
     response = make_response(json.dumps({"message": "Login successful"}), 200)
     response.headers.set("Content-Type", "application/json")
     response.headers.set("X-Content-Type-Options", "nosniff")
-    response.set_cookie('auth_token', token, max_age=3600, httponly=True)
+    response.set_cookie('auth_token', token, max_age=3600, httponly=True, secure=True)
 
     return response
 
@@ -115,7 +115,8 @@ def logout():
                                    {"$set": {"auth_token": None}})
 
     response = make_response(redirect(url_for('root.index')))
-    response.set_cookie('auth_token', '', max_age=0, httponly=True)
+    response.set_cookie('auth_token', '', max_age=0, httponly=True, secure=True)
+
     return response
 
 def allowed_file(filename):
