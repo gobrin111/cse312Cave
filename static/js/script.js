@@ -88,8 +88,10 @@ function chatMessageHTML(messageJSON) {
         <div class="message-container" id="message_${messageId}">
             <button class="delete-button" onclick="deleteMessage('${messageId}')"> X </button>
             ${username} <br>
-<!--            <img class="chatProfile" src="${profile_pic}" alt="Profile Icon" />-->
-            <div class="${origin}"> ${message} </div> <br>
+            <section class="message-body">
+                <img class="chatProfile" src="${profile_pic}" alt="Profile Icon" />
+                <div class="${origin}"> ${message} </div> <br>
+            </section>
             <button class="like-button" onclick="likeMessage('${messageId}')"> 👍 </button> 
             <span id="like_count_${messageId}">${like_count}</span>
         </div>

@@ -41,12 +41,6 @@ body {
     border: 6px solid transparent;
 }
 
-.chatProfile {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-}
-
 .left-header-element a {
     text-decoration: none;
     display: inline-block;
@@ -256,16 +250,27 @@ hr {
     font-size: 14pt;
 }
 
-.message-container > div {
+.message-body {
+    display: flex;
+}
+
+.chatProfile {
+    margin: 10px 5px;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+}
+
+.message-body > div {
+    margin: 10px 5px;
     font-size: 14pt;
     font-weight: normal;
     border-radius: 10px;
-    margin: 10px 5px 5px 5px;
     padding: 5px 10px;
     display: inline-block;
     word-wrap: break-word;
     word-break: break-word;
-    max-width: 25vw;
+    max-width: 18vw;
 }
 
 .other {
