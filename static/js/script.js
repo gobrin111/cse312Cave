@@ -1,8 +1,7 @@
 let chatMessages = {};
 let ws = true;
-
+const socket = io({autoConnect: false})
 if(ws){
-    const socket = io({autoConnect: false})
     socket.connect()
 }
 
