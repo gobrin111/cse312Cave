@@ -85,6 +85,24 @@ def deleteMessage(messageId):
                 socketio.emit('deleteUpdate', "message_"+messageId)
 
 
+@socketio.on("likeMessage")
+def likeMessage(messageId):
+    if "auth_token" in request.cookies:
+        user_account = user_collection.find_one(
+            {"auth_token": hashlib.sha256(request.cookies["auth_token"].encode("utf-8")).hexdigest()})
+
+        if user_account:
+            username = user_account["username"]
+            like = like_collection.find_one({"username": username, "message_id": messageId})
+            if like:
+                like_collection.delete_one({"username": username, "message_id": messageId})
+            else:
+                like_collection.insert_one({"username": username, "message_id": messageId})
+
+            updated_like_count = like_collection.count_documents({"message_id": messageId})
+            emit('likeMessage_client', {"num": updated_like_count, "message_id": "like_count_"+messageId}, broadcast=True)
+
+
 
 if __name__ == "__main__":
     socketio.run(app,host="0.0.0.0", port=8080, debug=True, use_reloader=False, log_output=True)

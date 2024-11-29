@@ -19,6 +19,11 @@ socket.on("deleteUpdate", function(messageId){
     message_2b_deleted.remove()
 })
 
+socket.on("likeMessage_client", function (server_data){
+    let update_like = document.getElementById(server_data.message_id);
+    update_like.textContent = server_data.num
+})
+
 if(!ws){
     setInterval(updateChat, 500);
 }
@@ -119,17 +124,21 @@ function deleteMessage(messageId) {
 }
 
 function likeMessage(messageId){
-    const request = new XMLHttpRequest();
-    request.onreadystatechange = function () {
-        if (this.readyState === 4 && this.status === 200) {
-            console.log(this.response);
-            const response = JSON.parse(this.response)
-            document.getElementById(`like_count_${messageId}`).textContent = response.like_count;
+    if (ws){
+        socket.emit("likeMessage", messageId)
+    } else {
+        const request = new XMLHttpRequest();
+        request.onreadystatechange = function () {
+            if (this.readyState === 4 && this.status === 200) {
+                console.log(this.response);
+                const response = JSON.parse(this.response)
+                document.getElementById(`like_count_${messageId}`).textContent = response.like_count;
+            }
         }
-    }
 
-    request.open("POST", "/chat-messages/like/" + messageId);
-    request.send();
+        request.open("POST", "/chat-messages/like/" + messageId);
+        request.send();
+    }
 }
 
 function addMessageToChat(messageJSON) {
