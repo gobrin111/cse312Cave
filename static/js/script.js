@@ -25,7 +25,7 @@ window.addEventListener("load", (event) => {
             console.log(this.response);
             const response = JSON.parse(this.response)
             if (response.score === "invalid"){
-                document.getElementById(`score`).textContent = "Current Score: [Login]";
+                document.getElementById(`score`).textContent = "";
             } else {
                 document.getElementById(`score`).textContent = "Current Score: " + response.score;
             }

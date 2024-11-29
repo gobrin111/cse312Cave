@@ -84,10 +84,15 @@ document.addEventListener("keydown", (e) => {
                         });
 
                         if (input[currentRow].join('') == word) {
-                            let score = 5 - currentRow;
-                            if (currentRow >= 5) {
-                                score = 1;
+                            let map = {
+                                0: 20,
+                                1: 10,
+                                2: 5,
+                                3: 4,
+                                4: 2,
+                                5: 1,
                             }
+                            let score = map[currentRow];
 
                             const request = new XMLHttpRequest();
 
@@ -96,7 +101,7 @@ document.addEventListener("keydown", (e) => {
                                     console.log(this.response);
                                     const response = JSON.parse(this.response)
                                     if (response.score === "invalid"){
-                                        document.getElementById(`score`).textContent = "Current Score: [Login]";
+                                        document.getElementById(`score`).textContent = "";
                                     } else {
                                         document.getElementById(`score`).textContent = "Current Score: " + response.score;
                                     }
@@ -109,6 +114,7 @@ document.addEventListener("keydown", (e) => {
                             request.send(JSON.stringify({"score" : score}));
 
                             setTimeout(resetGame, 2000);
+
                         } else {
                             currentRow++;
                             currentCol = 0;
@@ -123,7 +129,7 @@ document.addEventListener("keydown", (e) => {
                                 console.log(this.response);
                                 const response = JSON.parse(this.response)
                                 if (response.score === "invalid"){
-                                    document.getElementById(`score`).textContent = "Current Score: [Login]";
+                                    document.getElementById(`score`).textContent = "";
                                 } else {
                                     document.getElementById(`score`).textContent = "Current Score: " + response.score;
                                 }
