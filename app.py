@@ -15,7 +15,7 @@ from blueprints.game import game_bp
 # from blueprints.ws import ws_bp
 
 app = Flask(__name__)
-socketio = SocketIO(app, cors_allowed_origins="*", transport=["websocket"])
+socketio = SocketIO(app, cors_allowed_origins="*", transports=["websocket"])
 
 app.register_blueprint(root_bp)
 app.register_blueprint(auth_bp)
@@ -72,5 +72,6 @@ def handle_sendChat(message):
 
 
 if __name__ == "__main__":
-    socketio.run(app,host="0.0.0.0", port=8080, debug=True, use_reloader=False, log_output=True)
-    # app.run(host="0.0.0.0", port=8080, debug=True)
+    import eventlet
+    eventlet.monkey_patch()
+    socketio.run(app, host="0.0.0.0", port=int(os.environ.get('PORT', 8080)), log_output=True)
