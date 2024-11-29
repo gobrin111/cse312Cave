@@ -5,12 +5,15 @@ from bson import ObjectId
 import json
 import html
 import hashlib
-import os
-import ssl
 game_bp = Blueprint("game", __name__)
 
 mongo_uri = os.getenv('MONGO_URI')
-mongo_client = MongoClient(mongo_uri, server_api=ServerApi('1'), ssl=True, ssl_cert_reqs=ssl.CERT_NONE)
+mongo_client = MongoClient(
+    mongo_uri,
+    server_api=ServerApi('1'),
+    tls=True,
+    tlsAllowInvalidCertificates=True
+)
 db = mongo_client["wurdle"]
 user_collection = db["users"]
 chat_collection = db["chat"]
