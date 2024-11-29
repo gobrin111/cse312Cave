@@ -36,7 +36,7 @@ def handle_message():
 
 @app.before_request
 def before_request():
-    if not request.is_secure and request.url.startswith('http://'):
+    if request.headers.get('X-Forwarded-Proto', 'http') == 'http':
         url = request.url.replace('http://', 'https://', 1)
         code = 301
         return redirect(url, code=code)
@@ -73,5 +73,5 @@ def handle_sendChat(message):
 
 
 if __name__ == "__main__":
-    socketio.run(app, host="0.0.0.0", port=PORT, debug=True, use_reloader=False, log_output=True)
+    socketio.run(app, host="0.0.0.0", port=PORT, debug=False, use_reloader=False, log_output=True)
     # app.run(host="0.0.0.0", port=8080, debug=True)
