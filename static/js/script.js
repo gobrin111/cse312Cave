@@ -6,11 +6,17 @@ if(ws){
 }
 
 socket.on("connect", function(){
-    socket.emit("test", "user_stuff")
+    socket.emit("test", "user_stuff");
 })
-
+// reloads all the messages that are
+updateChat();
 socket.on("updateChat", function (server_data){
-    addMessageToChat(server_data)
+    addMessageToChat(server_data);
+})
+const chat_log = document.getElementsByClassName("chat_log");
+socket.on("deleteUpdate", function(messageId){
+    let message_2b_deleted = document.getElementById(messageId);
+    message_2b_deleted.remove()
 })
 
 if(!ws){
@@ -98,14 +104,18 @@ function chatMessageHTML(messageJSON) {
 }
 
 function deleteMessage(messageId) {
-    const request = new XMLHttpRequest();
-    request.onreadystatechange = function () {
-        if (this.readyState === 4 && this.status === 200) {
-            console.log(this.response);
+    if(ws){
+        socket.emit("deleteMessage", messageId)
+    } else {
+        const request = new XMLHttpRequest();
+        request.onreadystatechange = function () {
+            if (this.readyState === 4 && this.status === 200) {
+                console.log(this.response);
+            }
         }
+        request.open("POST", "/chat-messages/" + messageId);
+        request.send();
     }
-    request.open("POST", "/chat-messages/" + messageId);
-    request.send();
 }
 
 function likeMessage(messageId){

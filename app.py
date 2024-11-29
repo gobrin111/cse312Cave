@@ -1,7 +1,8 @@
 import hashlib
 import html
 
-from flask_socketio import SocketIO
+from bson import ObjectId
+from flask_socketio import SocketIO, emit
 
 from flask import Flask, request
 from pymongo import MongoClient
@@ -60,7 +61,29 @@ def handle_sendChat(message):
                 'like_count': like_collection.count_documents({"message_id": str(chat_collection.find_one({"username": username, "message": message})["_id"])}),
                 'profile_pic': profile_pic
             }
-            socketio.emit('updateChat', response)
+            emit('updateChat', response, broadcast=True, include_self=False)
+            response['from_user'] = True
+            emit('updateChat', response, to=request.sid)
+
+
+@socketio.on("deleteMessage")
+def deleteMessage(messageId):
+    message_id = ObjectId(messageId)
+    message = chat_collection.find_one({"_id": message_id})
+    flag = False
+
+    if "auth_token" in request.cookies:
+        auth_token = request.cookies.get("auth_token")
+        auth_token = hashlib.sha256(auth_token.encode('utf-8')).hexdigest()
+
+        if user_collection.find_one({"auth_token": auth_token}):
+            account = user_collection.find_one({"auth_token": auth_token})
+
+            if message["username"] == account["username"]:
+                chat_collection.delete_one({"_id": message_id})
+                like_collection.delete_many({"message_id": messageId})
+                socketio.emit('deleteUpdate', "message_"+messageId)
+
 
 
 if __name__ == "__main__":
