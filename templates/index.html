@@ -13,9 +13,11 @@
     <nav class="header">
         <div class="left-header-element">
             {% if username %}
-                <span>{{ username }}</span>
+                <img src="{{ profile_pic }}" alt="Default Icon" id="profilePic" style="cursor: pointer;"><span class="username">{{ username }}</span>
             {% else %}
-                <span> Guest </span>
+                <span><a href="login.html">
+                <img src="static/images/default.jpg" alt="Guest Icon" />
+                </a> Guest </span>
             {% endif %}
         </div>
 
@@ -38,6 +40,19 @@
             {% endif %}
         </div>
     </nav>
+
+    <div id="popupModal" class="popup-modal" style="display: none;">
+    <div class="popup-content">
+        <span class="close-button">X</span>
+        <img src="{{ profile_pic }}" alt="Enlarged Profile" class="enlarged-image">
+        <form method="post" action="/upload_profile_picture" enctype="multipart/form-data" id="uploadForm">
+            <input type="hidden" name="username" value=" {{ username }}">
+            <label for="fileInput" class="changeProfile">Change Profile Picture</label>
+            <input type="file" name="file" id="fileInput" accept=".png, .jpg, .jpeg, .gif" style="display: none;">
+            <button type="submit" style="display: none;"></button>
+        </form>
+    </div>
+</div>
 
     <hr>
 

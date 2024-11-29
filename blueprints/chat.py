@@ -22,6 +22,8 @@ def post_message():
     response = make_response(json.dumps({"message": "Message Posted"}), 200)
     response.headers.set("Content-Type", "application/json")
     response.headers.set("X-Content-Type-Options", "nosniff")
+    username = "Guest"
+    profile_pic = 'static/images/default.jpg'
 
     if "auth_token" in request.cookies:
         auth_token = request.cookies.get("auth_token")
@@ -30,10 +32,12 @@ def post_message():
         if user_collection.find_one({"auth_token": auth_token}):
             account = user_collection.find_one({"auth_token": auth_token})
             username = account.get("username")
-            chat_collection.insert_one({"username": username, "message": message})
+            profile_pic = account.get("profile_pic")
+            chat_collection.insert_one({"username": username, "message": message, "profile_pic": profile_pic})
 
     else:
-        response = make_response(json.dumps({"message": "no account"}), 403)
+    #     response = make_response(json.dumps({"message": "no account"}), 403)
+        chat_collection.insert_one({"username": username, "message": message, "profile_pic": profile_pic})
 
     return response
 
@@ -53,6 +57,7 @@ def get_messages():
         message_display.append({
             "message": message["message"],
             "username": message["username"],
+            "profile_pic": message["profile_pic"],
             "id": str(message["_id"]),
             "from_user": from_user,
             "like_count": like_collection.count_documents({"message_id": str(message["_id"])})

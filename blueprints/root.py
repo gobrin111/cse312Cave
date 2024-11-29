@@ -19,8 +19,10 @@ def index():
         user = user_collection.find_one({"auth_token": hashlib.sha256(auth_token.encode('utf-8')).hexdigest()})
 
     username = user["username"] if user else None
+    profile_pic = user["profile_pic"] if user else 'static/images/logo.png'
+    print("profile" + profile_pic)
 
-    response = make_response(render_template("index.html", username=username))
+    response = make_response(render_template("index.html", username=username, profile_pic=profile_pic))
     response.headers.set("Content-Type", "text/html")
     response.headers.set("X-Content-Type-Options", "nosniff")
     return response

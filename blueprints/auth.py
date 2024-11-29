@@ -1,11 +1,14 @@
-from flask import Blueprint, make_response, request, redirect, url_for
+from flask import Blueprint, make_response, request, redirect, url_for, Flask, current_app
 from pymongo import MongoClient
+from werkzeug.utils import secure_filename
 import json
 import bcrypt
 import hashlib
 import uuid
+import os
 
 auth_bp = Blueprint("auth", __name__)
+app = Flask(__name__, static_folder='static')
 
 mongo_client = MongoClient("mongo")
 db = mongo_client["wurdle"]
@@ -65,7 +68,10 @@ def register():
         return response
 
     hashed_password = hash_password(password)
-    user_collection.insert_one({"username": username, "password": hashed_password})
+
+    profile_pic = 'static/images/default.jpg'
+
+    user_collection.insert_one({"username": username, "password": hashed_password, "profile_pic": profile_pic})
 
     response = make_response(json.dumps({"message": "Register Successful"}), 200)
     response.headers.set("Content-Type", "application/json")
@@ -109,3 +115,31 @@ def logout():
     response = make_response(redirect(url_for('root.index')))
     response.set_cookie('auth_token', '', max_age=0, httponly=True)
     return response
+
+def allowed_file(filename):
+    allowed = {'png', 'jpg', 'jpeg', 'gif'}
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in allowed
+
+
+@auth_bp.route('/upload_profile_picture', methods=['POST'])
+def upload_profile_picture():
+    username = request.form.get('username').strip()
+    file = request.files['file']
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        relative_path = os.path.join('images', filename)
+        file_path = os.path.join(current_app.static_folder, relative_path)
+        file.save(file_path)
+
+        user_collection.update_one(
+            {"username": username},
+            {"$set": {"profile_pic": 'static/' + relative_path}}
+        )
+
+        response = make_response(redirect(url_for('root.index')))
+        return response
+    else:
+        response = make_response(json.dumps({"message": "Invalid File Type"}), 400)
+        response.headers.set("Content-Type", "application/json")
+        response.headers.set("X-Content-Type-Options", "nosniff")
+        return response
