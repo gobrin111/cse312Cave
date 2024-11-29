@@ -4,7 +4,7 @@ import os
 
 from flask_socketio import SocketIO
 
-from flask import Flask, request
+from flask import Flask, request, redirect
 from pymongo import MongoClient
 
 from blueprints.root import root_bp
@@ -33,6 +33,13 @@ score_collection = db["score"]
 @socketio.on("connect")
 def handle_message():
     print("Client connected!")
+
+@app.before_request
+def before_request():
+    if not request.is_secure and request.url.startswith('http://'):
+        url = request.url.replace('http://', 'https://', 1)
+        code = 301
+        return redirect(url, code=code)
 
 
 @socketio.on("test")

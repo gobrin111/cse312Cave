@@ -1,7 +1,6 @@
 let chatMessages = {};
 let ws = true;
-const serverUrl = 'wss://' + window.location.hostname + (window.location.port ? ':' + window.location.port : '');
-const socket = io(serverUrl, { secure: true, rejectUnauthorized: false, autoConnect: false });
+const socket = io({autoConnect: false})
 if(ws){
     socket.connect()
 }
