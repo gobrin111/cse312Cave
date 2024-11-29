@@ -9,7 +9,7 @@ db = mongo_client["wurdle"]
 user_collection = db["users"]
 chat_collection = db["chat"]
 like_collection = db["like"]
-
+score_collection = db["score"]
 
 @root_bp.route("/")
 def index():

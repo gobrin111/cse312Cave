@@ -1,6 +1,26 @@
 let chatMessages = {};
 setInterval(updateChat, 500);
 
+window.addEventListener("load", (event) => {
+    const request = new XMLHttpRequest();
+    request.onreadystatechange = function () {
+        if (this.readyState === 4 && this.status === 200) {
+            console.log(this.response);
+            const response = JSON.parse(this.response)
+            if (response.score === "invalid"){
+                document.getElementById(`score`).textContent = "Login for Score";
+            } else {
+                document.getElementById(`score`).textContent = "Current Score: " + response.score;
+            }
+        }
+    }
+
+    request.open("POST", "/send_score", true);
+    request.setRequestHeader("Content-Type", "application/json");
+
+    request.send(JSON.stringify({"score" : 0}));
+});
+
 document.addEventListener("keypress", function (event) {
     // Check if the Enter key is pressed and the chat input field is focused
     if (event.code === "Enter" && document.activeElement == document.getElementById("chat-input")) {
