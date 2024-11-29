@@ -6,7 +6,6 @@ from flask_socketio import SocketIO
 
 from flask import Flask, request
 from pymongo import MongoClient
-from pymongo.server_api import ServerApi
 
 from blueprints.root import root_bp
 from blueprints.auth import auth_bp
@@ -15,7 +14,8 @@ from blueprints.game import game_bp
 # from blueprints.ws import ws_bp
 
 app = Flask(__name__)
-socketio = SocketIO(app, cors_allowed_origins="*", transports=["websocket"])
+socketio = SocketIO(app, cors_allowed_origins="*", transport=["websocket"])
+PORT = int(os.environ.get('PORT', 8080))
 
 app.register_blueprint(root_bp)
 app.register_blueprint(auth_bp)
@@ -23,14 +23,8 @@ app.register_blueprint(chat_bp)
 app.register_blueprint(game_bp)
 # app.register_blueprint(ws_bp)
 
-
-mongo_uri = os.getenv('MONGO_URI')
-mongo_client = MongoClient(
-    mongo_uri,
-    server_api=ServerApi('1'),
-    tls=True,
-    tlsAllowInvalidCertificates=True
-)
+MONGO_URI = os.environ.get('MONGO_URI', 'mongodb://mongo:27017/wurdle')
+mongo_client = MongoClient(MONGO_URI)
 db = mongo_client["wurdle"]
 user_collection = db["users"]
 chat_collection = db["chat"]
@@ -72,6 +66,5 @@ def handle_sendChat(message):
 
 
 if __name__ == "__main__":
-    import eventlet
-    eventlet.monkey_patch()
-    socketio.run(app, host="0.0.0.0", port=int(os.environ.get('PORT', 8080)), log_output=True)
+    socketio.run(app, host="0.0.0.0", port=PORT, debug=True, use_reloader=False, log_output=True)
+    # app.run(host="0.0.0.0", port=8080, debug=True)

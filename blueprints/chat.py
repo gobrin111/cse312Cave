@@ -8,13 +8,8 @@ import hashlib
 import os
 chat_bp = Blueprint("chat", __name__)
 
-mongo_uri = os.getenv('MONGO_URI')
-mongo_client = MongoClient(
-    mongo_uri,
-    server_api=ServerApi('1'),
-    tls=True,
-    tlsAllowInvalidCertificates=True
-)
+MONGO_URI = os.environ.get('MONGO_URI', 'mongodb://mongo:27017/wurdle')
+mongo_client = MongoClient(MONGO_URI)
 db = mongo_client["wurdle"]
 user_collection = db["users"]
 chat_collection = db["chat"]
