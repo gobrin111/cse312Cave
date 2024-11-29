@@ -6,6 +6,7 @@ from flask_socketio import SocketIO
 
 from flask import Flask, request
 from pymongo import MongoClient
+from pymongo.server_api import ServerApi
 
 from blueprints.root import root_bp
 from blueprints.auth import auth_bp
