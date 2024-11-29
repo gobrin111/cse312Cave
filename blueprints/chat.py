@@ -6,7 +6,7 @@ import json
 import html
 import hashlib
 import os
-
+import ssl
 chat_bp = Blueprint("chat", __name__)
 
 mongo_uri = os.getenv('MONGO_URI')

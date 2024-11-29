@@ -6,7 +6,7 @@ import json
 import html
 import hashlib
 import os
-
+import ssl
 game_bp = Blueprint("game", __name__)
 
 mongo_uri = os.getenv('MONGO_URI')

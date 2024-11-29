@@ -3,7 +3,7 @@ from pymongo import MongoClient
 from pymongo.server_api import ServerApi
 import hashlib
 import os
-
+import ssl
 root_bp = Blueprint("root", __name__)
 
 mongo_uri = os.getenv('MONGO_URI')

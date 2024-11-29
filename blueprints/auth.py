@@ -7,6 +7,7 @@ import bcrypt
 import hashlib
 import uuid
 import os
+import ssl
 
 auth_bp = Blueprint("auth", __name__)
 app = Flask(__name__, static_folder='static')
