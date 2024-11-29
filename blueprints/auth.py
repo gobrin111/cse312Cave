@@ -11,7 +11,7 @@ auth_bp = Blueprint("auth", __name__)
 app = Flask(__name__, static_folder='static')
 
 mongo_uri = os.getenv('MONGO_URI')
-mongo_client = MongoClient(mongo_uri, tls=True, tlsAllowInvalidCertificates=True)
+client = MongoClient(mongo_uri, server_api=ServerApi('1'))
 db = mongo_client["wurdle"]
 user_collection = db["users"]
 chat_collection = db["chat"]
