@@ -5,6 +5,7 @@ from bson import ObjectId
 import json
 import html
 import hashlib
+import os
 game_bp = Blueprint("game", __name__)
 
 mongo_uri = os.getenv('MONGO_URI')
