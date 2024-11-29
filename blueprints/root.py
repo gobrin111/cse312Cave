@@ -7,7 +7,7 @@ import os
 root_bp = Blueprint("root", __name__)
 
 mongo_uri = os.getenv('MONGO_URI')
-client = MongoClient(mongo_uri, server_api=ServerApi('1'))
+mongo_client = MongoClient(mongo_uri, server_api=ServerApi('1'))
 db = mongo_client["wurdle"]
 user_collection = db["users"]
 chat_collection = db["chat"]
