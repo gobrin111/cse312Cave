@@ -41,12 +41,6 @@ body {
     border: 6px solid transparent;
 }
 
-.chatProfile {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-}
-
 .left-header-element a {
     text-decoration: none;
     display: inline-block;
@@ -86,16 +80,16 @@ body {
     flex-direction: column;
     align-items: center;
     width: 350px;
-    height: 60%;
-    background-color: white;
+    height: 30%;
+    background-color: #121213;
     padding: 20px;
-    border-radius: 10px;
+    border-radius: 20px;
     position: relative;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    border: 3px solid #f8f8f8;
 }
 
 .close-button {
-    color: black;
+    color: #f8f8f8;
     position: absolute;
     top: 10px;
     right: 20px;
@@ -109,9 +103,24 @@ body {
     height: 100px;
     border-radius: 50%;
     vertical-align: middle;
-    border: 3px solid black;
+    /*border: 3px solid #f8f8f8;*/
 }
 
+.popup-content > form > label {
+    margin-top: 20px;
+    font-size: 20pt;
+    letter-spacing: 1px;
+    font-family: "Bebas Neue", sans-serif;
+    transition: 0.25s;
+    border: 2px solid #f8f8f8;
+    background-color: #121213;
+    color: #f8f8f8;
+}
+
+.popup-content > form > label:hover {
+    background-color: #f8f8f8;
+    color: #121213;
+}
 
 .header > span{
     flex: 1;
@@ -256,16 +265,27 @@ hr {
     font-size: 14pt;
 }
 
-.message-container > div {
+.message-body {
+    display: flex;
+}
+
+.chatProfile {
+    margin: 10px 5px;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+}
+
+.message-body > div {
+    margin: 10px 5px;
     font-size: 14pt;
     font-weight: normal;
     border-radius: 10px;
-    margin: 10px 5px 5px 5px;
     padding: 5px 10px;
     display: inline-block;
     word-wrap: break-word;
     word-break: break-word;
-    max-width: 25vw;
+    max-width: 18vw;
 }
 
 .other {

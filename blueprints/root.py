@@ -1,10 +1,12 @@
 from flask import Blueprint, render_template, send_from_directory, make_response, request
 from pymongo import MongoClient
+from pymongo.server_api import ServerApi
 import hashlib
-
+import os
 root_bp = Blueprint("root", __name__)
 
-mongo_client = MongoClient("mongo")
+MONGO_URI = os.environ.get('MONGO_URI', 'mongodb://mongo:27017/wurdle')
+mongo_client = MongoClient(MONGO_URI)
 db = mongo_client["wurdle"]
 user_collection = db["users"]
 chat_collection = db["chat"]

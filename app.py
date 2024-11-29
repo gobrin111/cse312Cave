@@ -1,10 +1,11 @@
 import hashlib
 import html
+import os
 
 from bson import ObjectId
 from flask_socketio import SocketIO, emit
 
-from flask import Flask, request
+from flask import Flask, request, redirect
 from pymongo import MongoClient
 
 from blueprints.root import root_bp
@@ -15,6 +16,7 @@ from blueprints.game import game_bp
 
 app = Flask(__name__)
 socketio = SocketIO(app, cors_allowed_origins="*", transport=["websocket"])
+PORT = int(os.environ.get('PORT', 8080))
 
 app.register_blueprint(root_bp)
 app.register_blueprint(auth_bp)
@@ -22,8 +24,8 @@ app.register_blueprint(chat_bp)
 app.register_blueprint(game_bp)
 # app.register_blueprint(ws_bp)
 
-
-mongo_client = MongoClient("mongo")
+MONGO_URI = os.environ.get('MONGO_URI', 'mongodb://mongo:27017/wurdle')
+mongo_client = MongoClient(MONGO_URI)
 db = mongo_client["wurdle"]
 user_collection = db["users"]
 chat_collection = db["chat"]
@@ -32,6 +34,13 @@ score_collection = db["score"]
 @socketio.on("connect")
 def handle_message():
     print("Client connected!")
+
+@app.before_request
+def before_request():
+    if request.headers.get('X-Forwarded-Proto', 'http') == 'http':
+        url = request.url.replace('http://', 'https://', 1)
+        code = 301
+        return redirect(url, code=code)
 
 
 @socketio.on("test")
@@ -105,5 +114,5 @@ def likeMessage(messageId):
 
 
 if __name__ == "__main__":
-    socketio.run(app,host="0.0.0.0", port=8080, debug=True, use_reloader=False, log_output=True)
+    socketio.run(app, host="0.0.0.0", port=PORT, debug=False, use_reloader=False, log_output=True)
     # app.run(host="0.0.0.0", port=8080, debug=True)

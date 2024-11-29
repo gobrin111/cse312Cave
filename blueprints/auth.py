@@ -1,5 +1,6 @@
 from flask import Blueprint, make_response, request, redirect, url_for, Flask, current_app
 from pymongo import MongoClient
+from pymongo.server_api import ServerApi
 from werkzeug.utils import secure_filename
 import json
 import bcrypt
@@ -10,7 +11,8 @@ import os
 auth_bp = Blueprint("auth", __name__)
 app = Flask(__name__, static_folder='static')
 
-mongo_client = MongoClient("mongo")
+MONGO_URI = os.environ.get('MONGO_URI', 'mongodb://mongo:27017/wurdle')
+mongo_client = MongoClient(MONGO_URI)
 db = mongo_client["wurdle"]
 user_collection = db["users"]
 chat_collection = db["chat"]

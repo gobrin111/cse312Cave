@@ -36,7 +36,7 @@ window.addEventListener("load", (event) => {
             console.log(this.response);
             const response = JSON.parse(this.response)
             if (response.score === "invalid"){
-                document.getElementById(`score`).textContent = "Current Score: [Login]";
+                document.getElementById(`score`).textContent = "";
             } else {
                 document.getElementById(`score`).textContent = "Current Score: " + response.score;
             }
@@ -99,8 +99,10 @@ function chatMessageHTML(messageJSON) {
         <div class="message-container" id="message_${messageId}">
             <button class="delete-button" onclick="deleteMessage('${messageId}')"> X </button>
             ${username} <br>
-            <img class="chatProfile" src="${profile_pic}" alt="Profile Icon" />
-            <div class="${origin}"> ${message} </div> <br>
+            <section class="message-body">
+                <img class="chatProfile" src="${profile_pic}" alt="Profile Icon" />
+                <div class="${origin}"> ${message} </div> <br>
+            </section>
             <button class="like-button" onclick="likeMessage('${messageId}')"> 👍 </button> 
             <span id="like_count_${messageId}">${like_count}</span>
         </div>
