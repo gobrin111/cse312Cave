@@ -9,7 +9,7 @@ import os
 chat_bp = Blueprint("chat", __name__)
 
 mongo_uri = os.getenv('MONGO_URI')
-mongo_client = MongoClient(mongo_uri, ssl=True, ssl_cert_reqs='CERT_NONE')
+mongo_client = MongoClient(mongo_uri, tls=True, tlsAllowInvalidCertificates=True)
 db = mongo_client["wurdle"]
 user_collection = db["users"]
 chat_collection = db["chat"]
