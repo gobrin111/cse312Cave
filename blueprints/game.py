@@ -4,10 +4,12 @@ from bson import ObjectId
 import json
 import html
 import hashlib
+import os
 
 game_bp = Blueprint("game", __name__)
 
-mongo_client = MongoClient("mongo")
+mongo_uri = os.getenv('MONGO_URI')
+mongo_client = MongoClient(mongo_uri, tls=True, tlsAllowInvalidCertificates=True)
 db = mongo_client["wurdle"]
 user_collection = db["users"]
 chat_collection = db["chat"]

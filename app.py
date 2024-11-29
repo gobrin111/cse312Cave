@@ -1,5 +1,6 @@
 import hashlib
 import html
+import os
 
 from flask_socketio import SocketIO
 
@@ -22,7 +23,8 @@ app.register_blueprint(game_bp)
 # app.register_blueprint(ws_bp)
 
 
-mongo_client = MongoClient("mongo")
+mongo_uri = os.getenv('MONGO_URI')
+mongo_client = MongoClient(mongo_uri, tls=True, tlsAllowInvalidCertificates=True)
 db = mongo_client["wurdle"]
 user_collection = db["users"]
 chat_collection = db["chat"]
