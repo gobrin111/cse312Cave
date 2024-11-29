@@ -263,6 +263,9 @@ hr {
     margin: 10px 5px 5px 5px;
     padding: 5px 10px;
     display: inline-block;
+    word-wrap: break-word;
+    word-break: break-word;
+    max-width: 25vw;
 }
 
 .other {

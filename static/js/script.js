@@ -54,7 +54,7 @@ function chatMessageHTML(messageJSON) {
     const from_user = messageJSON.from_user;
     const like_count = messageJSON.like_count;
     const profile_pic = messageJSON.profile_pic;
-    console.log(profile_pic);
+    // console.log(profile_pic);
 
     let origin = "other";
     if (from_user) {
@@ -65,7 +65,7 @@ function chatMessageHTML(messageJSON) {
         <div class="message-container" id="message_${messageId}">
             <button class="delete-button" onclick="deleteMessage('${messageId}')"> X </button>
             ${username} <br>
-            <img class = "chatProfile" src="${profile_pic}" alt="Profile Icon" />
+<!--            <img class = "chatProfile" src="${profile_pic}" alt="Profile Icon" />-->
             <div class="${origin}"> ${message} </div> <br>
             <button class="like-button" onclick="likeMessage('${messageId}')"> 👍 </button> 
             <span id="like_count_${messageId}">${like_count}</span>

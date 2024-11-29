@@ -14,6 +14,7 @@ chat_collection = db["chat"]
 like_collection = db["like"]
 score_collection = db["score"]
 
+
 @game_bp.route("/send_score", methods=["POST"])
 def send_score():
     data = request.get_json()
