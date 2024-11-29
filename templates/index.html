@@ -13,7 +13,7 @@
     <nav class="header">
         <div class="left-header-element">
             {% if username %}
-                <img src="{{ profile_pic }}" alt="Default Icon" id="profilePic" style="cursor: pointer;"><span class="username">{{ username }}</span>
+                <img src="{{ profile_pic }}" alt="Profile" id="profilePic" style="cursor: pointer;"><span class="username">{{ username }}</span>
             {% else %}
                 <span><a href="login.html">
                 <img src="static/images/default.jpg" alt="Guest Icon" />
@@ -65,7 +65,7 @@
 
         <div class="game">
 
-            <span class="current-score" id="score"> Login for Score</span>
+            <span class="current-score" id="score"> Current Score: [Login] </span>
 
             <section class="row-container">
                 <div class="row" id="row-1">

@@ -283,7 +283,7 @@ hr {
 
 .current-score {
     display: block;
-    margin: 10px auto;
+    margin: 10px auto 20px auto;
 }
 
 .game {
@@ -301,9 +301,9 @@ hr {
 .row {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    /*grid-gap: 0;*/ /* using width to distribute cells equally */
+    /*grid-gap: 0.5vw;*/
     margin: 0.25vw auto;
-    width: 95%;
+    width: 85%;
 }
 
 .inner {

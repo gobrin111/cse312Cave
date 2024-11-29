@@ -96,7 +96,7 @@ document.addEventListener("keydown", (e) => {
                                     console.log(this.response);
                                     const response = JSON.parse(this.response)
                                     if (response.score === "invalid"){
-                                        document.getElementById(`score`).textContent = "Login for Score";
+                                        document.getElementById(`score`).textContent = "Current Score: [Login]";
                                     } else {
                                         document.getElementById(`score`).textContent = "Current Score: " + response.score;
                                     }
@@ -123,7 +123,7 @@ document.addEventListener("keydown", (e) => {
                                 console.log(this.response);
                                 const response = JSON.parse(this.response)
                                 if (response.score === "invalid"){
-                                    document.getElementById(`score`).textContent = "Login for Score";
+                                    document.getElementById(`score`).textContent = "Current Score: [Login]";
                                 } else {
                                     document.getElementById(`score`).textContent = "Current Score: " + response.score;
                                 }
