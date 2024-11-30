@@ -104,7 +104,7 @@ document.addEventListener("keydown", (e) => {
                                     if (response.score === "invalid"){
                                         document.getElementById(`score`).textContent = "";
                                     } else {
-                                        document.getElementById(`score`).textContent = "Current Score: " + response.score;
+                                        document.getElementById(`score`).textContent = "Score: " + response.score;
                                     }
                                 }
                             }
@@ -137,7 +137,7 @@ document.addEventListener("keydown", (e) => {
                                 if (response.score === "invalid"){
                                     document.getElementById(`score`).textContent = "";
                                 } else {
-                                    document.getElementById(`score`).textContent = "Current Score: " + response.score;
+                                    document.getElementById(`score`).textContent = "Score: " + response.score;
                                 }
                             }
 

@@ -108,6 +108,7 @@ body {
 
 .popup-content > form > label {
     margin-top: 20px;
+    padding: 5px;
     font-size: 20pt;
     letter-spacing: 1px;
     font-family: "Bebas Neue", sans-serif;
@@ -301,13 +302,41 @@ hr {
 /* End chat ================================================*/
 /* Game ================================================*/
 
-.current-score {
-    display: block;
-    margin: 10px auto 20px auto;
-}
+/*.current-score {*/
+/*    display: block;*/
+/*    margin: 10px auto 20px auto;*/
+/*}*/
 
 .game {
     padding-top: 10px;
+}
+
+.game-header {
+    display: flex;
+    margin: 5px auto 10px auto;
+}
+
+.game-header > div {
+    flex: 1;
+    align-content: center;
+    font-size: 16pt;
+}
+
+.game-header > div > button {
+    border-radius: 10px;
+    padding: 5px 10px;
+    font-size: 18pt;
+    letter-spacing: 1px;
+    font-family: "Bebas Neue", sans-serif;
+    transition: 0.25s;
+    border: 2px solid #f8f8f8;
+    background-color: #121213;
+    color: #f8f8f8;
+}
+
+.game-header > div > button:hover {
+    background-color: #f8f8f8;
+    color: #121213;
 }
 
 /* START OF WORDLE ANIMATION */
@@ -319,14 +348,18 @@ hr {
 }
 
 .row {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    /*display: grid;*/
+    /*grid-template-columns: repeat(5, 1fr);*/
     /*grid-gap: 0.5vw;*/
-    margin: 0.25vw auto;
+    /*margin: 0.25vw auto;*/
     width: 85%;
+    display: flex;
+    justify-content: center; /* Horizontally center the row of inner divs */
+    align-items: center; /* Vertically align the row (optional) */
 }
 
 .inner {
+    margin: 0.2vw;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -431,7 +464,7 @@ hr {
 }
 
 .leaderboard-log {
-    height: calc(100% - 110px);
+    height: calc(100% - 75px);
     overflow-y: scroll;
 }
 
