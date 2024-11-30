@@ -417,6 +417,11 @@ hr {
 }
 
 /* END OF WORDLE ANIMATION */
+
+.alert-message {
+    margin-top: 10px;
+    font-size: 12pt;
+}
 /* End Game ================================================*/
 /* Leaderboard ================================================*/
 
