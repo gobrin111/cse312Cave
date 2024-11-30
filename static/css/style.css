@@ -348,14 +348,10 @@ hr {
 }
 
 .row {
-    /*display: grid;*/
-    /*grid-template-columns: repeat(5, 1fr);*/
-    /*grid-gap: 0.5vw;*/
-    /*margin: 0.25vw auto;*/
     width: 85%;
     display: flex;
-    justify-content: center; /* Horizontally center the row of inner divs */
-    align-items: center; /* Vertically align the row (optional) */
+    justify-content: center;
+    align-items: center;
 }
 
 .inner {
