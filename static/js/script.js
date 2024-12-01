@@ -34,6 +34,8 @@ document.addEventListener("keypress", function (event) {
 });
 
 function updateBoard(){
+    let board_log = document.getElementsByClassName("leaderboard-log");
+    board_log.childNodes = new Array();
     const request = new XMLHttpRequest();
     request.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
@@ -81,7 +83,7 @@ function boardEntryHTML(entryJSON){
     const score = entryJSON.score;
     const profile_pic = entryJSON.profile_pic;
     const userId = entryJSON.id;
-
+    console.log("username: " + username + " | " + "score: " + score)
     let entryHTML = `
         <div class="leaderboard-entry" id="entry_${userId}">
             <img src="${profile_pic}" alt="Profile Icon" />

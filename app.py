@@ -156,7 +156,7 @@ def timer_start():
             username = account.get("username")
             active_score_collection.update_one({"username": username}, {"$set": {"score": 0}})
             socketio.emit('update_active_score', {"score": "invalid"}, to=request.sid)
-    end_time = time.time() + 11
+    end_time = time.time() + 31
     user_timers[sid] = end_time
     # Start the countdown in a background task
     socketio.start_background_task(countdown_task, sid, end_time, request.cookies)
