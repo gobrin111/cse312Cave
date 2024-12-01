@@ -26,7 +26,7 @@ def get_messages():
     entry_display = []
     for message in messages:
         entry_display.append({
-            "score": message["message"],
+            "score": message["score"],
             "username": message["username"],
             "profile_pic": message["profile_pic"],
             "id": str(message["_id"]),

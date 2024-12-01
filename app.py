@@ -154,19 +154,15 @@ def timer_start():
         if user_collection.find_one({"auth_token": auth_token}):
             account = user_collection.find_one({"auth_token": auth_token})
             username = account.get("username")
-            if active_score_collection.find_one({"username": username}):
-                active_score_collection.update_one({"username": username}, {"$set": {"score": 0}})
-                socketio.emit('update_active_score', {"score": 0}, to=request.sid)
-            else:
-                active_score_collection.insert_one({"username": username, "score": 0})
-                socketio.emit('update_active_score', {"score": 0}, to=request.sid)
-    end_time = time.time() + 61
+            active_score_collection.update_one({"username": username}, {"$set": {"score": 0}})
+            socketio.emit('update_active_score', {"score": "invalid"}, to=request.sid)
+    end_time = time.time() + 11
     user_timers[sid] = end_time
     # Start the countdown in a background task
-    socketio.start_background_task(countdown_task, sid, end_time)
+    socketio.start_background_task(countdown_task, sid, end_time, request.cookies)
 
 
-def countdown_task(sid, end_time):
+def countdown_task(sid, end_time, cookies):
     while True:
         # print("counting")
         # Calculate remaining time
@@ -175,17 +171,29 @@ def countdown_task(sid, end_time):
             break
         if remaining_time <= 0:
             socketio.emit('timer_update', {'remaining_time': 0}, to=sid)
-            # messages = board_score_collection.find({}).sort("score", -1)
-            # entry_display = []
-            # for message in messages:
-            #     entry_display.append({
-            #         "score": message["message"],
-            #         "username": message["username"],
-            #         "profile_pic": message["profile_pic"],
-            #         "id": str(message["_id"]),
-            #
-            #     })
+            if "auth_token" in cookies:
+                auth_token = cookies.get("auth_token")
+                auth_token = hashlib.sha256(auth_token.encode('utf-8')).hexdigest()
+
+                if user_collection.find_one({"auth_token": auth_token}):
+                    account = user_collection.find_one({"auth_token": auth_token})
+                    username = account.get("username")
+                    profile_pic = account.get("profile_pic")
+                    if active_score_collection.find_one({"username": username}):
+                        new_score = active_score_collection.find_one({"username": username})["score"]
+                        if board_score_collection.find_one({"username": username}):
+                            board_score = board_score_collection.find_one({"username": username}).get("score")
+                            if board_score < new_score:
+                                board_score_collection.update_one({"username": username}, {"$set": {"score": new_score}})
+                        else:
+                            board_score_collection.insert_one({"username": username, "score": new_score, "profile_pic": profile_pic, "id": str(account.get("_id"))})
+                        # active_score_collection.update_one({"username": username}, {"$set": {"score": new_score}})
+
+                    else:
+                        board_score_collection.insert_one({"username": username, "score": 0, "profile_pic": profile_pic})
+                        # active_score_collection.insert_one({"username": username, "score": score})
             socketio.emit('update_leaderboard')
+            del user_timers[sid]
             # socketio.emit('timer_expired', {'message': 'Time is up!'}, to=sid)
             break
 
