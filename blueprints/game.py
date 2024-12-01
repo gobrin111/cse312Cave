@@ -14,7 +14,10 @@ db = mongo_client["wurdle"]
 user_collection = db["users"]
 chat_collection = db["chat"]
 like_collection = db["like"]
-score_collection = db["score"]
+# the active score collection keeps track of the scores that user currently have
+active_score_collection = db["score"]
+# when the scoreboard is being displayed, it will look this db to determine what to display
+board_score_collection = db["board"]
 
 
 @game_bp.route("/send_score", methods=["POST"])
@@ -30,12 +33,12 @@ def send_score():
         if user_collection.find_one({"auth_token": auth_token}):
             account = user_collection.find_one({"auth_token": auth_token})
             username = account.get("username")
-            if score_collection.find_one({"username": username}):
-                new_score = score_collection.find_one({"username": username})["score"] + score
-                score_collection.update_one({"username": username}, {"$set": {"score": new_score}})
+            if active_score_collection.find_one({"username": username}):
+                new_score = active_score_collection.find_one({"username": username})["score"] + score
+                active_score_collection.update_one({"username": username}, {"$set": {"score": new_score}})
                 response = make_response({"score": new_score}, 200)
             else:
-                score_collection.insert_one({"username": username, "score": score})
+                active_score_collection.insert_one({"username": username, "score": score})
     else:
         response = make_response({"score": "invalid"}, 200)
 

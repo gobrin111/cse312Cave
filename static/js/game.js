@@ -95,24 +95,28 @@ document.addEventListener("keydown", (e) => {
                             }
                             let score = map[currentRow];
 
-                            const request = new XMLHttpRequest();
+                            if(ws){
 
-                            request.onreadystatechange = function () {
-                                if (this.readyState === 4 && this.status === 200) {
-                                    console.log(this.response);
-                                    const response = JSON.parse(this.response)
-                                    if (response.score === "invalid"){
-                                        document.getElementById(`score`).textContent = "Score: 0";
-                                    } else {
-                                        document.getElementById(`score`).textContent = "Score: " + response.score;
+                            } else {
+                                const request = new XMLHttpRequest();
+
+                                request.onreadystatechange = function () {
+                                    if (this.readyState === 4 && this.status === 200) {
+                                        console.log(this.response);
+                                        const response = JSON.parse(this.response)
+                                        if (response.score === "invalid"){
+                                            document.getElementById(`score`).textContent = "Score: 0";
+                                        } else {
+                                            document.getElementById(`score`).textContent = "Score: " + response.score;
+                                        }
                                     }
                                 }
+
+                                request.open("POST", "/send_score", true);
+                                request.setRequestHeader("Content-Type", "application/json");
+
+                                request.send(JSON.stringify({"score" : score}));
                             }
-
-                            request.open("POST", "/send_score", true);
-                            request.setRequestHeader("Content-Type", "application/json");
-
-                            request.send(JSON.stringify({"score" : score}));
 
                             setTimeout(resetGame, 2000);
 
@@ -129,22 +133,26 @@ document.addEventListener("keydown", (e) => {
 
                             let score = -5;
 
-                            const request = new XMLHttpRequest();
+                            if(ws){
 
-                            request.onreadystatechange = function () {
-                                console.log(this.response);
-                                const response = JSON.parse(this.response)
-                                if (response.score === "invalid"){
-                                    document.getElementById(`score`).textContent = "Score: 0";
-                                } else {
-                                    document.getElementById(`score`).textContent = "Score: " + response.score;
+                            } else {
+                                const request = new XMLHttpRequest();
+
+                                request.onreadystatechange = function () {
+                                    console.log(this.response);
+                                    const response = JSON.parse(this.response)
+                                    if (response.score === "invalid"){
+                                        document.getElementById(`score`).textContent = "Score: 0";
+                                    } else {
+                                        document.getElementById(`score`).textContent = "Score: " + response.score;
+                                    }
                                 }
+
+                                request.open("POST", "/send_score");
+                                request.setRequestHeader("Content-Type", "application/json");
+
+                                request.send(JSON.stringify({"score" : score}));
                             }
-
-                            request.open("POST", "/send_score");
-                            request.setRequestHeader("Content-Type", "application/json");
-
-                            request.send(JSON.stringify({"score" : score}));
 
                             setTimeout(resetGame, 2000);
                         }

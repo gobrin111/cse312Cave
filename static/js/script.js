@@ -1,33 +1,47 @@
 let chatMessages = {};
-let ws = true;
-const socket = io({autoConnect: false})
-if(ws){
-    socket.connect()
-}
 
-socket.on("connect", function(){
-    socket.emit("test", "user_stuff");
-})
+// change ws to false to change everything back to polling
+let ws = true;
+// updates the chat using polling, if websockets are off
+// if(!ws){
+//     setInterval(updateChat, 500);
+// }
+// const socket = io({autoConnect: false})
+// if(ws){
+//     socket.connect()
+// }
+//
+// socket.on("connect", function(){
+//     socket.emit("test", "user_stuff");
+// })
 // reloads all the messages that are
 updateChat();
-socket.on("updateChat", function (server_data){
-    addMessageToChat(server_data);
-})
-const chat_log = document.getElementsByClassName("chat_log");
-socket.on("deleteUpdate", function(messageId){
-    let message_2b_deleted = document.getElementById(messageId);
-    message_2b_deleted.remove()
-})
+// socket.on("updateChat", function (server_data){
+//     addMessageToChat(server_data);
+// })
+// socket.on("deleteUpdate", function(messageId){
+//     let message_2b_deleted = document.getElementById(messageId);
+//     message_2b_deleted.remove();
+// })
+//
+// socket.on("likeMessage_client", function (server_data){
+//     let update_like = document.getElementById(server_data.message_id);
+//     update_like.textContent = server_data.num;
+// })
+//
+// socket.on('timer_update', function (data) {
+//     let time_left = data.remaining_time;
+//     console.log(time_left)
+//     let timer_box = document.getElementById("time");
+//     timer_box.textContent = "Time: " + String(time_left);
+// })
 
-socket.on("likeMessage_client", function (server_data){
-    let update_like = document.getElementById(server_data.message_id);
-    update_like.textContent = server_data.num
-})
-
-if(!ws){
-    setInterval(updateChat, 500);
-}
-
+// function timer_button(){
+//     //calls server to start timer and resets current score on browser
+//     // console.log("button clicked")
+//     socket.emit("timer_start");
+//
+// }
 
 window.addEventListener("load", (event) => {
     const request = new XMLHttpRequest();
