@@ -35,7 +35,7 @@ socket.on("likeMessage_client", function (server_data){
 // client listens to the server to get the updated time so that there is no client side timing
 socket.on('timer_update', function (data) {
     let time_left = data.remaining_time;
-    console.log(time_left)
+    // console.log(time_left)
     let timer_box = document.getElementById("time");
     timer_box.textContent = "Time: " + String(time_left);
 })
@@ -48,3 +48,21 @@ function timer_button(){
     socket.emit("timer_start");
 
 }
+
+
+// game stuff below
+
+// updates the current score that a user has
+socket.on('update_active_score', function(data){
+    let score = String(data.score);
+    if (score === "invalid"){
+        document.getElementById(`score`).textContent = "Score: 0";
+    } else {
+        document.getElementById(`score`).textContent = "Score: " + score;
+    }
+})
+
+
+socket.on('update_leaderboard', function (){
+    updateBoard()
+})

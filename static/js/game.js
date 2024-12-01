@@ -96,7 +96,7 @@ document.addEventListener("keydown", (e) => {
                             let score = map[currentRow];
 
                             if(ws){
-
+                                socket.emit('send_score', {"score": score})
                             } else {
                                 const request = new XMLHttpRequest();
 

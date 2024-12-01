@@ -13,6 +13,7 @@ from blueprints.root import root_bp
 from blueprints.auth import auth_bp
 from blueprints.chat import chat_bp
 from blueprints.game import game_bp
+from blueprints.board import board_bp
 
 # from blueprints.ws import ws_bp
 
@@ -24,6 +25,7 @@ app.register_blueprint(root_bp)
 app.register_blueprint(auth_bp)
 app.register_blueprint(chat_bp)
 app.register_blueprint(game_bp)
+app.register_blueprint(board_bp)
 # app.register_blueprint(ws_bp)
 
 MONGO_URI = os.environ.get('MONGO_URI', 'mongodb://mongo:27017/wurdle')
@@ -145,6 +147,19 @@ def timer_start():
     sid = request.sid
     if sid in user_timers.keys():
         return
+    if "auth_token" in request.cookies:
+        auth_token = request.cookies.get("auth_token")
+        auth_token = hashlib.sha256(auth_token.encode('utf-8')).hexdigest()
+
+        if user_collection.find_one({"auth_token": auth_token}):
+            account = user_collection.find_one({"auth_token": auth_token})
+            username = account.get("username")
+            if active_score_collection.find_one({"username": username}):
+                active_score_collection.update_one({"username": username}, {"$set": {"score": 0}})
+                socketio.emit('update_active_score', {"score": 0}, to=request.sid)
+            else:
+                active_score_collection.insert_one({"username": username, "score": 0})
+                socketio.emit('update_active_score', {"score": 0}, to=request.sid)
     end_time = time.time() + 61
     user_timers[sid] = end_time
     # Start the countdown in a background task
@@ -153,19 +168,56 @@ def timer_start():
 
 def countdown_task(sid, end_time):
     while True:
-        print("counting")
+        # print("counting")
         # Calculate remaining time
         remaining_time = end_time - time.time()
         if sid not in active_users:
             break
         if remaining_time <= 0:
             socketio.emit('timer_update', {'remaining_time': 0}, to=sid)
+            # messages = board_score_collection.find({}).sort("score", -1)
+            # entry_display = []
+            # for message in messages:
+            #     entry_display.append({
+            #         "score": message["message"],
+            #         "username": message["username"],
+            #         "profile_pic": message["profile_pic"],
+            #         "id": str(message["_id"]),
+            #
+            #     })
+            socketio.emit('update_leaderboard')
             # socketio.emit('timer_expired', {'message': 'Time is up!'}, to=sid)
             break
 
         # Send remaining time to the client
         socketio.emit('timer_update', {'remaining_time': int(remaining_time)}, to=sid)
         socketio.sleep(1)  # Wait for 1 second between updates
+
+
+# ---------------- game stuff
+
+
+@socketio.on("send_score")
+def send_score(data):
+    score = data["score"]
+    if "auth_token" in request.cookies:
+        auth_token = request.cookies.get("auth_token")
+        auth_token = hashlib.sha256(auth_token.encode('utf-8')).hexdigest()
+
+        if user_collection.find_one({"auth_token": auth_token}):
+            account = user_collection.find_one({"auth_token": auth_token})
+            username = account.get("username")
+            if active_score_collection.find_one({"username": username}):
+                new_score = active_score_collection.find_one({"username": username})["score"] + score
+                active_score_collection.update_one({"username": username}, {"$set": {"score": new_score}})
+
+                socketio.emit('update_active_score', {"score": new_score}, to=request.sid)
+                # response = make_response({"score": new_score}, 200)
+            else:
+                active_score_collection.insert_one({"username": username, "score": score})
+    else:
+        socketio.emit('update_active_score', {"score": "invalid"}, to=request.sid)
+        # response = make_response({"score": "invalid"}, 200)
 
 
 if __name__ == "__main__":
