@@ -193,6 +193,8 @@ def countdown_task(sid, end_time, cookies):
                     else:
                         board_score_collection.insert_one({"username": username, "score": 0, "profile_pic": profile_pic})
                         # active_score_collection.insert_one({"username": username, "score": score})
+                    if board_score_collection.find_one({"username": username}).get("profile_pic") != profile_pic:
+                        board_score_collection.update_one({"username": username}, {"$set": {"profile_pic": profile_pic}})
             socketio.emit('update_leaderboard')
             del user_timers[sid]
             # socketio.emit('timer_expired', {'message': 'Time is up!'}, to=sid)
