@@ -45,11 +45,11 @@
 
             <form action="/login" method="post" enctype="application/x-www-form-urlencoded" onsubmit="event.preventDefault(); loginUser();">
                 <label>Username: <br/>
-                    <input type="text" id="username"/>
+                    <input type="text" id="username" maxlength="20">
                 </label>
                 <br/>
                 <label>Password: <br/>
-                    <input type="password" id="password">
+                    <input type="password" id="password" maxlength="20">
                 </label>
                 <br/>
                 <input type="submit" value="Log in" class="button">

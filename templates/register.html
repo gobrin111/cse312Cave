@@ -51,15 +51,15 @@
 
             <form action="/register" method="post" enctype="application/x-www-form-urlencoded" onsubmit="event.preventDefault(); registerUser();">
                 <label>Username: <br/>
-                    <input type="text" id="username" required/>
+                    <input type="text" id="username" required maxlength="20">
                 </label>
                 <br/>
                 <label>Password: <br/>
-                    <input type="password" id="password" required>
+                    <input type="password" id="password" required maxlength="20">
                 </label>
                 <br/>
                 <label>Confirm Password: <br/>
-                    <input type="password" id="password_confirm" required>
+                    <input type="password" id="password_confirm" required maxlength="20">
                 </label>
                 <br/>
                 <input type="submit" value="Sign Up" class="button">
