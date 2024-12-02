@@ -1,6 +1,7 @@
 import hashlib
 import html
 import os
+import time
 
 from bson import ObjectId
 from flask_socketio import SocketIO, emit
@@ -12,6 +13,8 @@ from blueprints.root import root_bp
 from blueprints.auth import auth_bp
 from blueprints.chat import chat_bp
 from blueprints.game import game_bp
+from blueprints.board import board_bp
+
 # from blueprints.ws import ws_bp
 
 app = Flask(__name__)
@@ -22,6 +25,7 @@ app.register_blueprint(root_bp)
 app.register_blueprint(auth_bp)
 app.register_blueprint(chat_bp)
 app.register_blueprint(game_bp)
+app.register_blueprint(board_bp)
 # app.register_blueprint(ws_bp)
 
 MONGO_URI = os.environ.get('MONGO_URI', 'mongodb://mongo:27017/wurdle')
@@ -30,10 +34,29 @@ db = mongo_client["wurdle"]
 user_collection = db["users"]
 chat_collection = db["chat"]
 like_collection = db["like"]
-score_collection = db["score"]
+active_score_collection = db["score"]
+board_score_collection = db["board"]
+
+# keeps track of the timers of each user
+user_timers = {}
+
+active_users = set()
+
+
 @socketio.on("connect")
 def handle_message():
     print("Client connected!")
+    active_users.add(request.sid)
+
+
+@socketio.on("disconnect")
+def handle_disconnect():
+    # if a user disconnects, we have to delete their session id from the timers
+    # just in case there might be an error
+    active_users.remove(request.sid)
+    if request.sid in user_timers.keys():
+        del user_timers[request.sid]
+
 
 @app.before_request
 def before_request():
@@ -47,6 +70,8 @@ def before_request():
 def test_message(message):
     print(message)
 
+
+# ---------------- Chat Stuff
 
 
 @socketio.on("sendChat")
@@ -67,7 +92,8 @@ def handle_sendChat(message):
                 'message': message,
                 'id': str(chat_collection.find_one({"username": username, "message": message})["_id"]),
                 'from_user': False,
-                'like_count': like_collection.count_documents({"message_id": str(chat_collection.find_one({"username": username, "message": message})["_id"])}),
+                'like_count': like_collection.count_documents(
+                    {"message_id": str(chat_collection.find_one({"username": username, "message": message})["_id"])}),
                 'profile_pic': profile_pic
             }
             emit('updateChat', response, broadcast=True, include_self=False)
@@ -91,7 +117,7 @@ def deleteMessage(messageId):
             if message["username"] == account["username"]:
                 chat_collection.delete_one({"_id": message_id})
                 like_collection.delete_many({"message_id": messageId})
-                socketio.emit('deleteUpdate', "message_"+messageId)
+                socketio.emit('deleteUpdate', "message_" + messageId)
 
 
 @socketio.on("likeMessage")
@@ -109,8 +135,98 @@ def likeMessage(messageId):
                 like_collection.insert_one({"username": username, "message_id": messageId})
 
             updated_like_count = like_collection.count_documents({"message_id": messageId})
-            emit('likeMessage_client', {"num": updated_like_count, "message_id": "like_count_"+messageId}, broadcast=True)
+            emit('likeMessage_client', {"num": updated_like_count, "message_id": "like_count_" + messageId},
+                 broadcast=True)
 
+
+# ---------------- timer stuff
+
+
+@socketio.on("timer_start")
+def timer_start():
+    print("timer_start")
+    sid = request.sid
+    if sid in user_timers.keys():
+        return
+    if "auth_token" in request.cookies:
+        auth_token = request.cookies.get("auth_token")
+        auth_token = hashlib.sha256(auth_token.encode('utf-8')).hexdigest()
+
+        if user_collection.find_one({"auth_token": auth_token}):
+            account = user_collection.find_one({"auth_token": auth_token})
+            username = account.get("username")
+            active_score_collection.update_one({"username": username}, {"$set": {"score": 0}})
+            socketio.emit('update_active_score', {"score": "invalid"}, to=request.sid)
+    end_time = time.time() + 21
+    user_timers[sid] = end_time
+    # Start the countdown in a background task
+    socketio.start_background_task(countdown_task, sid, end_time, request.cookies)
+
+
+def countdown_task(sid, end_time, cookies):
+    while True:
+        # print("counting")
+        # Calculate remaining time
+        remaining_time = end_time - time.time()
+        if sid not in active_users:
+            break
+        if remaining_time <= 0:
+            socketio.emit('timer_update', {'remaining_time': 0}, to=sid)
+            if "auth_token" in cookies:
+                auth_token = cookies.get("auth_token")
+                auth_token = hashlib.sha256(auth_token.encode('utf-8')).hexdigest()
+
+                if user_collection.find_one({"auth_token": auth_token}):
+                    account = user_collection.find_one({"auth_token": auth_token})
+                    username = account.get("username")
+                    profile_pic = account.get("profile_pic")
+                    if active_score_collection.find_one({"username": username}):
+                        new_score = active_score_collection.find_one({"username": username})["score"]
+                        if board_score_collection.find_one({"username": username}):
+                            board_score = board_score_collection.find_one({"username": username}).get("score")
+                            if board_score < new_score:
+                                board_score_collection.update_one({"username": username}, {"$set": {"score": new_score}})
+                        else:
+                            board_score_collection.insert_one({"username": username, "score": new_score, "profile_pic": profile_pic, "id": str(account.get("_id"))})
+                        # active_score_collection.update_one({"username": username}, {"$set": {"score": new_score}})
+
+                    else:
+                        board_score_collection.insert_one({"username": username, "score": 0, "profile_pic": profile_pic})
+                        # active_score_collection.insert_one({"username": username, "score": score})
+            socketio.emit('update_leaderboard')
+            del user_timers[sid]
+            # socketio.emit('timer_expired', {'message': 'Time is up!'}, to=sid)
+            break
+
+        # Send remaining time to the client
+        socketio.emit('timer_update', {'remaining_time': int(remaining_time)}, to=sid)
+        socketio.sleep(1)  # Wait for 1 second between updates
+
+
+# ---------------- game stuff
+
+
+@socketio.on("send_score")
+def send_score(data):
+    score = data["score"]
+    if "auth_token" in request.cookies:
+        auth_token = request.cookies.get("auth_token")
+        auth_token = hashlib.sha256(auth_token.encode('utf-8')).hexdigest()
+
+        if user_collection.find_one({"auth_token": auth_token}):
+            account = user_collection.find_one({"auth_token": auth_token})
+            username = account.get("username")
+            if active_score_collection.find_one({"username": username}):
+                new_score = active_score_collection.find_one({"username": username})["score"] + score
+                active_score_collection.update_one({"username": username}, {"$set": {"score": new_score}})
+
+                socketio.emit('update_active_score', {"score": new_score}, to=request.sid)
+                # response = make_response({"score": new_score}, 200)
+            else:
+                active_score_collection.insert_one({"username": username, "score": score})
+    else:
+        socketio.emit('update_active_score', {"score": "invalid"}, to=request.sid)
+        # response = make_response({"score": "invalid"}, 200)
 
 
 if __name__ == "__main__":

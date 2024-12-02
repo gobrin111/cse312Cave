@@ -1,33 +1,10 @@
 let chatMessages = {};
+
+// change ws to false to change everything back to polling
 let ws = true;
-const socket = io({autoConnect: false})
-if(ws){
-    socket.connect()
-}
 
-socket.on("connect", function(){
-    socket.emit("test", "user_stuff");
-})
-// reloads all the messages that are
 updateChat();
-socket.on("updateChat", function (server_data){
-    addMessageToChat(server_data);
-})
-const chat_log = document.getElementsByClassName("chat_log");
-socket.on("deleteUpdate", function(messageId){
-    let message_2b_deleted = document.getElementById(messageId);
-    message_2b_deleted.remove()
-})
-
-socket.on("likeMessage_client", function (server_data){
-    let update_like = document.getElementById(server_data.message_id);
-    update_like.textContent = server_data.num
-})
-
-if(!ws){
-    setInterval(updateChat, 500);
-}
-
+updateBoard();
 
 window.addEventListener("load", (event) => {
     const request = new XMLHttpRequest();
@@ -55,6 +32,71 @@ document.addEventListener("keypress", function (event) {
         sendChat();
     }
 });
+
+function updateBoard(){
+    const request = new XMLHttpRequest();
+    request.onreadystatechange = function () {
+        if (this.readyState === 4 && this.status === 200) {
+            updateBoardEntries(JSON.parse(this.response));
+        }
+    }
+    request.open("GET", "/board-entries");
+    request.send();
+}
+
+function updateBoardEntries(serverEntries){
+    let serverIndex = 0
+    let localIndex = 0;
+
+    // while (serverIndex < serverEntries.length && localIndex < chatMessages.length) {
+    //     let fromServer = serverEntries[serverIndex];
+    //     let localMessage = chatMessages[localIndex];
+    //     if (fromServer["id"] !== localMessage["id"]) {
+    //         // this message has been deleted
+    //         const messageElem = document.getElementById("entry_" + localMessage["id"]);
+    //         messageElem.parentNode.removeChild(messageElem);
+    //         localIndex++;
+    //     } else {
+    //         serverIndex++;
+    //         localIndex++;
+    //     }
+    // }
+    //
+    // while (localIndex < chatMessages.length) {
+    //     let localMessage = chatMessages[localIndex];
+    //     const messageElem = document.getElementById("entry_" + localMessage["id"]);
+    //     messageElem.parentNode.removeChild(messageElem);
+    //     localIndex++;
+    // }
+
+    while (serverIndex < serverEntries.length) {
+        addEntryToBoard(serverEntries[serverIndex]);
+        serverIndex++;
+    }
+    // chatMessages = serverEntries;
+}
+
+function boardEntryHTML(entryJSON){
+    const username = entryJSON.username;
+    const score = entryJSON.score;
+    const profile_pic = entryJSON.profile_pic;
+    const userId = entryJSON.id;
+    console.log("username: " + username + " | " + "score: " + score)
+    let entryHTML = `
+        <div class="leaderboard-entry" id="entry_${userId}">
+            <img src="${profile_pic}" alt="Profile Icon" />
+            <span> ${username} | Score: ${score} </span>
+        </div>
+        `
+    return entryHTML;
+}
+
+function addEntryToBoard(entryJSON){
+    const chatMessages = document.querySelector('.leaderboard-log');
+    chatMessages.insertAdjacentHTML("beforeend", boardEntryHTML(entryJSON))
+    chatMessages.scrollIntoView(false);
+    chatMessages.scrollTop = chatMessages.scrollHeight - chatMessages.clientHeight;
+}
 
 function sendChat() {
     let userInput = document.getElementById("chat-input");
