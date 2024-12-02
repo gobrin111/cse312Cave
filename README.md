@@ -1,5 +1,6 @@
 # cse312Cave
 
+## How To Play
 To play the game, you need to be logged in and have a registered account.
 
 <br>
@@ -17,6 +18,10 @@ Once the timer ends, the leaderboard will update using websockets to all users.
 
 For testing purposes, the target word is printed out in the console.
 
-<br>
-Deploy:
-<br> https://wurdle-614bdc1d2aa6.herokuapp.com/
+
+## How To Change Your Profile Picture (Media Uploads)
+If you're already registered and signed up, click on your profile picture top left and click on the "Change Profile Picture" button.
+
+
+## Our Deployment Link
+https://wurdle-614bdc1d2aa6.herokuapp.com/
