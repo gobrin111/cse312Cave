@@ -16,3 +16,7 @@ Once the timer ends, the leaderboard will update using websockets to all users.
 
 
 For testing purposes, the target word is printed out in the console.
+
+<br>
+Deploy:
+<br> https://wurdle-614bdc1d2aa6.herokuapp.com/
