@@ -11,3 +11,8 @@ Press "ENTER" to send in your guess.
 <br>
 
 Once the timer ends, the leaderboard will update using websockets to all users.
+
+<br>
+
+
+For testing purposes, the target word is printed out in the console.
