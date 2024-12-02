@@ -16,7 +16,7 @@ Once the timer ends, the leaderboard will update using websockets to all users.
 <br>
 
 
-For testing purposes, the target word is printed out in the console.
+**For testing purposes, you can see the answer in the console.**
 
 
 ## How To Change Your Profile Picture (Media Uploads)
