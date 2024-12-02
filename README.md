@@ -22,7 +22,7 @@ Rankings of users will automatically update in real time if a user scores better
 
 
 ## How To Change Your Profile Picture (Media Uploads)
-If you're already registered and signed up, click on your profile picture top left and click on the "Change Profile Picture" button.
+If you're already registered and signed up, click on your profile picture top left and click on the "Change Profile Picture" button. Your desired profile picture will show up in the live chat when you send a message.
 
 
 ## Our Deployment Link
