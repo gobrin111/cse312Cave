@@ -54,7 +54,8 @@ def handle_disconnect():
     # if a user disconnects, we have to delete their session id from the timers
     # just in case there might be an error
     active_users.remove(request.sid)
-    del user_timers[request.sid]
+    if request.sid in user_timers.keys():
+        del user_timers[request.sid]
 
 
 @app.before_request
@@ -156,7 +157,7 @@ def timer_start():
             username = account.get("username")
             active_score_collection.update_one({"username": username}, {"$set": {"score": 0}})
             socketio.emit('update_active_score', {"score": "invalid"}, to=request.sid)
-    end_time = time.time() + 31
+    end_time = time.time() + 21
     user_timers[sid] = end_time
     # Start the countdown in a background task
     socketio.start_background_task(countdown_task, sid, end_time, request.cookies)

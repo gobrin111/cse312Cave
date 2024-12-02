@@ -64,5 +64,9 @@ socket.on('update_active_score', function(data){
 
 
 socket.on('update_leaderboard', function (){
+    // let board_log = document.getElementsByClassName("leaderboard-log");
+    // board_log.childNodes = new Array();
+    document.querySelector('.leaderboard-log').innerHTML = '';
+    console.log("leaderboard should be cleared")
     updateBoard()
 })

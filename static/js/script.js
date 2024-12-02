@@ -34,8 +34,6 @@ document.addEventListener("keypress", function (event) {
 });
 
 function updateBoard(){
-    let board_log = document.getElementsByClassName("leaderboard-log");
-    board_log.childNodes = new Array();
     const request = new XMLHttpRequest();
     request.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
@@ -50,32 +48,32 @@ function updateBoardEntries(serverEntries){
     let serverIndex = 0
     let localIndex = 0;
 
-    while (serverIndex < serverEntries.length && localIndex < chatMessages.length) {
-        let fromServer = serverEntries[serverIndex];
-        let localMessage = chatMessages[localIndex];
-        if (fromServer["id"] !== localMessage["id"]) {
-            // this message has been deleted
-            const messageElem = document.getElementById("entry_" + localMessage["id"]);
-            messageElem.parentNode.removeChild(messageElem);
-            localIndex++;
-        } else {
-            serverIndex++;
-            localIndex++;
-        }
-    }
-
-    while (localIndex < chatMessages.length) {
-        let localMessage = chatMessages[localIndex];
-        const messageElem = document.getElementById("entry_" + localMessage["id"]);
-        messageElem.parentNode.removeChild(messageElem);
-        localIndex++;
-    }
+    // while (serverIndex < serverEntries.length && localIndex < chatMessages.length) {
+    //     let fromServer = serverEntries[serverIndex];
+    //     let localMessage = chatMessages[localIndex];
+    //     if (fromServer["id"] !== localMessage["id"]) {
+    //         // this message has been deleted
+    //         const messageElem = document.getElementById("entry_" + localMessage["id"]);
+    //         messageElem.parentNode.removeChild(messageElem);
+    //         localIndex++;
+    //     } else {
+    //         serverIndex++;
+    //         localIndex++;
+    //     }
+    // }
+    //
+    // while (localIndex < chatMessages.length) {
+    //     let localMessage = chatMessages[localIndex];
+    //     const messageElem = document.getElementById("entry_" + localMessage["id"]);
+    //     messageElem.parentNode.removeChild(messageElem);
+    //     localIndex++;
+    // }
 
     while (serverIndex < serverEntries.length) {
         addEntryToBoard(serverEntries[serverIndex]);
         serverIndex++;
     }
-    chatMessages = serverEntries;
+    // chatMessages = serverEntries;
 }
 
 function boardEntryHTML(entryJSON){
