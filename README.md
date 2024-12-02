@@ -13,13 +13,12 @@ Press "ENTER" to send in your guess.
 
 Once the timer ends, the leaderboard will update using websockets to all users.
 
+**For testing purposes, you can see the answer in the console.**
+
 <br>
 
 ## Leaderboard (Websockets)
 Rankings of users will automatically update in real time if a user scores better 
-
-
-**For testing purposes, you can see the answer in the console.**
 
 
 ## How To Change Your Profile Picture (Media Uploads)
