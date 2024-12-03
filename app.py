@@ -90,7 +90,7 @@ def handle_sendChat(message):
             response = {
                 'username': username,
                 'message': escaped_message,
-                'id': str(chat_collection.find_one({"username": username, "message": message})["_id"]),
+                'id': str(chat_collection.find_one({"username": username, "message": escaped_message})["_id"]),
                 'from_user': False,
                 'like_count': like_collection.count_documents(
                     {"message_id": str(chat_collection.find_one({"username": username, "message": escaped_message})["_id"])}),
