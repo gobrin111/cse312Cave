@@ -89,11 +89,11 @@ def handle_sendChat(message):
             chat_collection.insert_one({"username": username, "message": escaped_message, "profile_pic": profile_pic})
             response = {
                 'username': username,
-                'message': message,
+                'message': escaped_message,
                 'id': str(chat_collection.find_one({"username": username, "message": message})["_id"]),
                 'from_user': False,
                 'like_count': like_collection.count_documents(
-                    {"message_id": str(chat_collection.find_one({"username": username, "message": message})["_id"])}),
+                    {"message_id": str(chat_collection.find_one({"username": username, "message": escaped_message})["_id"])}),
                 'profile_pic': profile_pic
             }
             emit('updateChat', response, broadcast=True, include_self=False)
