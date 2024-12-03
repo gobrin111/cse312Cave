@@ -27,3 +27,7 @@ If you're already registered and signed up, click on your profile picture top le
 
 ## Our Deployment Link
 https://wurdle-614bdc1d2aa6.herokuapp.com/
+
+
+## DDOS Testing Disclaimer
+For testing the rate limiter, keep in mind that our home page alone does ~11 requests per reload. So if you reload too quickly you will get blocked by the site.
