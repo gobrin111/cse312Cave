@@ -5,7 +5,7 @@ if(!ws){
 }
 
 
-const socket = io({autoConnect: false})
+const socket = io({autoConnect: false, transport: ['websocket']})
 if(ws){
     socket.connect()
 }

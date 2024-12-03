@@ -18,7 +18,7 @@ from blueprints.board import board_bp
 # from blueprints.ws import ws_bp
 
 app = Flask(__name__)
-socketio = SocketIO(app, cors_allowed_origins="*", transport=["websocket"])
+socketio = SocketIO(app, cors_allowed_origins="*")
 PORT = int(os.environ.get('PORT', 8080))
 
 app.register_blueprint(root_bp)
@@ -132,7 +132,7 @@ def handle_sendChat(message):
             chat_collection.insert_one({"username": username, "message": escaped_message, "profile_pic": profile_pic})
             response = {
                 'username': username,
-                'message': message,
+                'message': escaped_message,
                 'id': str(chat_collection.find_one({"username": username, "message": escaped_message})["_id"]),
                 'from_user': False,
                 'like_count': like_collection.count_documents(
