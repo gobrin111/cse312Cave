@@ -6,7 +6,7 @@ import time
 from bson import ObjectId
 from flask_socketio import SocketIO, emit
 
-from flask import Flask, request, redirect
+from flask import Flask, request, redirect, jsonify
 from pymongo import MongoClient
 
 from blueprints.root import root_bp
@@ -42,13 +42,21 @@ user_timers = {}
 
 active_users = set()
 
+# Store request counts and block info
+ip_data = {}
 
+
+# ---------------- connection, disconnection, redirects
+
+
+# adds active users to a list, so that we can later break the timer if a user disconnects
 @socketio.on("connect")
 def handle_message():
     print("Client connected!")
     active_users.add(request.sid)
 
 
+# removes users from these lists for the timer functions
 @socketio.on("disconnect")
 def handle_disconnect():
     # if a user disconnects, we have to delete their session id from the timers
@@ -58,14 +66,48 @@ def handle_disconnect():
         del user_timers[request.sid]
 
 
+# handles redirecting users on the live deployment to the https instead of http
+# also need to ip the ip limiter in before request as well
 @app.before_request
 def before_request():
+    # redirects users to use https
     if os.getenv('HEROKU') == '1':
         if request.headers.get('X-Forwarded-Proto', 'http') == 'http':
             url = request.url.replace('http://', 'https://', 1)
             return redirect(url, code=301)
 
+    # ip limiter
+    current_time = time.time()
+    ip = request.remote_addr
+    print("this is a request")
+    if ip not in ip_data:
+        ip_data[ip] = {'requests': [], 'blocked_until': 0}
 
+    if ip_data[ip]["blocked_until"] > time.time():
+        return jsonify({
+            "error": "Too Many Requests",
+            "message": "You are in 30 second jail right now."
+        }), 429
+
+    # gets rid of old request times that outside the time window
+    ip_data[ip]["requests"] = [req_time for req_time in ip_data[ip]["requests"] if current_time - req_time < 10]
+
+    # adds current request time
+    ip_data[ip]["requests"].append(current_time)
+
+    if len(ip_data[ip]["requests"]) > 50:
+        ip_data[ip]["blocked_until"] = current_time + 30
+        return jsonify({
+            "error": "Too Many Requests"
+        }), 429
+
+
+
+
+
+
+
+# testing socketio to see how websockets work with flask
 @socketio.on("test")
 def test_message(message):
     print(message)
@@ -74,6 +116,7 @@ def test_message(message):
 # ---------------- Chat Stuff
 
 
+# dynamically sends chat messages to active users
 @socketio.on("sendChat")
 def handle_sendChat(message):
     escaped_message = html.escape(message)
@@ -89,11 +132,12 @@ def handle_sendChat(message):
             chat_collection.insert_one({"username": username, "message": escaped_message, "profile_pic": profile_pic})
             response = {
                 'username': username,
-                'message': escaped_message,
+                'message': message,
                 'id': str(chat_collection.find_one({"username": username, "message": escaped_message})["_id"]),
                 'from_user': False,
                 'like_count': like_collection.count_documents(
-                    {"message_id": str(chat_collection.find_one({"username": username, "message": escaped_message})["_id"])}),
+                    {"message_id": str(
+                        chat_collection.find_one({"username": username, "message": escaped_message})["_id"])}),
                 'profile_pic': profile_pic
             }
             emit('updateChat', response, broadcast=True, include_self=False)
@@ -101,6 +145,7 @@ def handle_sendChat(message):
             emit('updateChat', response, to=request.sid)
 
 
+# deletes messages if the user is able to do so
 @socketio.on("deleteMessage")
 def deleteMessage(messageId):
     message_id = ObjectId(messageId)
@@ -120,6 +165,7 @@ def deleteMessage(messageId):
                 socketio.emit('deleteUpdate', "message_" + messageId)
 
 
+# liking messages
 @socketio.on("likeMessage")
 def likeMessage(messageId):
     if "auth_token" in request.cookies:
@@ -142,6 +188,9 @@ def likeMessage(messageId):
 # ---------------- timer stuff
 
 
+# calculates the expected end time for the user when they press the start button
+# then it calls the background task to send the user each time
+# there might be a better way of doing this ngl
 @socketio.on("timer_start")
 def timer_start():
     print("timer_start")
@@ -163,6 +212,7 @@ def timer_start():
     socketio.start_background_task(countdown_task, sid, end_time, request.cookies)
 
 
+# this is the background task that send the user who pressed the start button the time they have left
 def countdown_task(sid, end_time, cookies):
     while True:
         # print("counting")
@@ -185,19 +235,23 @@ def countdown_task(sid, end_time, cookies):
                         if board_score_collection.find_one({"username": username}):
                             board_score = board_score_collection.find_one({"username": username}).get("score")
                             if board_score < new_score:
-                                board_score_collection.update_one({"username": username}, {"$set": {"score": new_score}})
+                                board_score_collection.update_one({"username": username},
+                                                                  {"$set": {"score": new_score}})
                         else:
-                            board_score_collection.insert_one({"username": username, "score": new_score, "profile_pic": profile_pic, "id": str(account.get("_id"))})
+                            board_score_collection.insert_one(
+                                {"username": username, "score": new_score, "profile_pic": profile_pic,
+                                 "id": str(account.get("_id"))})
                         # active_score_collection.update_one({"username": username}, {"$set": {"score": new_score}})
 
                     else:
-                        board_score_collection.insert_one({"username": username, "score": 0, "profile_pic": profile_pic})
+                        board_score_collection.insert_one(
+                            {"username": username, "score": 0, "profile_pic": profile_pic})
                         # active_score_collection.insert_one({"username": username, "score": score})
                     if board_score_collection.find_one({"username": username}).get("profile_pic") != profile_pic:
-                        board_score_collection.update_one({"username": username}, {"$set": {"profile_pic": profile_pic}})
+                        board_score_collection.update_one({"username": username},
+                                                          {"$set": {"profile_pic": profile_pic}})
             socketio.emit('update_leaderboard')
             del user_timers[sid]
-            # socketio.emit('timer_expired', {'message': 'Time is up!'}, to=sid)
             break
 
         # Send remaining time to the client
@@ -207,7 +261,7 @@ def countdown_task(sid, end_time, cookies):
 
 # ---------------- game stuff
 
-
+# dynamically updates the user score while they are playing the game
 @socketio.on("send_score")
 def send_score(data):
     score = data["score"]
