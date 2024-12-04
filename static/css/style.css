@@ -487,3 +487,10 @@ hr {
 }
 
 /* End Leaderboard ================================================*/
+
+#easter-egg-image {
+    position: absolute;
+    width: 100vw;
+    display: none;
+    z-index: 100;
+}

@@ -84,7 +84,7 @@ function boardEntryHTML(entryJSON){
     console.log("username: " + username + " | " + "score: " + score)
     let entryHTML = `
         <div class="leaderboard-entry" id="entry_${userId}">
-            <img src="${profile_pic}" alt="Profile Icon" />
+            <img src="${profile_pic}"/>
             <span> ${username} | Score: ${score} </span>
         </div>
         `
@@ -142,7 +142,7 @@ function chatMessageHTML(messageJSON) {
             <button class="delete-button" onclick="deleteMessage('${messageId}')"> X </button>
             ${username} <br>
             <section class="message-body">
-                <img class="chatProfile" src="${profile_pic}" alt="Profile Icon" />
+                <img class="chatProfile" src="${profile_pic}"/>
                 <div class="${origin}"> ${message} </div> <br>
             </section>
             <button class="like-button" onclick="likeMessage('${messageId}')"> 👍 </button> 
