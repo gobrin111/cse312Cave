@@ -29,11 +29,15 @@ If you're already registered and signed up, click on your profile picture top le
 https://wurdle-614bdc1d2aa6.herokuapp.com/
 
 
-## Objective 3: Creativity and Documentation
-Go to the main page with the game and chat displayed.
+## Objective 3: Creativity and Documentation - HTML command trigger
+Go to the deployed version of our app, with the link above.
+
+Go to the main page with the game and chat displayed. (it should take you to it by default)
 
 Click on the wordle game box section.
 
 Then type in "jesse" and press enter.
 
 This will change the page's display and play a sound effect.
+
+Verify that you can see the image that appears and that you can hear the sound effect.
