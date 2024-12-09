@@ -36,4 +36,4 @@ Click on the wordle game box section.
 
 Then type in "jesse" and press enter.
 
-This will change the pages HTML and play a sound effect.
+This will change the page's display and play a sound effect.
