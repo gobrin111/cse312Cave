@@ -41,3 +41,6 @@ Then type in "jesse" and press enter.
 This will change the page's display and play a sound effect.
 
 Verify that you can see the image that appears and that you can hear the sound effect.
+
+### Wordle Game Aspect
+Another creative aspect of our website is the wordle game in general. It randomly chooses a word from our set of words for the user to guess. The user can guess by typing letters and try to guess the word based on the clues given each guess.
