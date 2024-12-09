@@ -29,5 +29,8 @@ If you're already registered and signed up, click on your profile picture top le
 https://wurdle-614bdc1d2aa6.herokuapp.com/
 
 
-## DDOS Testing Disclaimer
-For testing the rate limiter, keep in mind that our home page alone does ~11 requests per reload. So if you reload too quickly you will get blocked by the site.
+## Objective 3: Creativity and Documentation
+Go to the main page with the game and chat displayed.
+Click on the wordle game box section.
+Then type in "jesse" and press enter.
+This will change the pages HTML and play a sound effect.
