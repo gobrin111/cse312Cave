@@ -31,6 +31,9 @@ https://wurdle-614bdc1d2aa6.herokuapp.com/
 
 ## Objective 3: Creativity and Documentation
 Go to the main page with the game and chat displayed.
+
 Click on the wordle game box section.
+
 Then type in "jesse" and press enter.
+
 This will change the pages HTML and play a sound effect.
